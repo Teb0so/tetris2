@@ -4,8 +4,6 @@
 Pieces i_piece = {
     .piece = 'i',
     .piece_size = 3,
-    .rotation_stages[0] = 1,
-    .rotation_stages[1] = 4,
     .array = {
         {0, 0, 0, 0,},
         {0, 0, 0, 0,},
@@ -18,7 +16,6 @@ Pieces i_piece = {
 Pieces o_piece = {
     .piece = 'o',
     .piece_size = 3,
-    .rotation_stages[0] = 1,
     .array = {
         {0, 0, 0, 0,},
         {0, 1, 1, 0,},
@@ -32,8 +29,6 @@ Pieces o_piece = {
 Pieces s_piece = {
     .piece = 's',
     .piece_size = 2,
-    .rotation_stages[0] = 1,
-    .rotation_stages[1] = 2,
     .array = {
         {0, 0, 0,},
         {0, 1, 1,},
@@ -45,8 +40,6 @@ Pieces s_piece = {
 Pieces z_piece = {
     .piece = 'z',
     .piece_size = 2,
-    .rotation_stages[0] = 1,
-    .rotation_stages[1] = 2,
     .array = {
         {0, 0, 0,},
         {1, 1, 0,},
@@ -58,10 +51,6 @@ Pieces z_piece = {
 Pieces j_piece = {
     .piece = 'j',
     .piece_size = 2,
-    .rotation_stages[0] = 1,
-    .rotation_stages[1] = 2,
-    .rotation_stages[2] = 3,
-    .rotation_stages[3] = 4,
     .array = {
         {0, 0, 0,},
         {1, 1, 1,},
@@ -73,10 +62,6 @@ Pieces j_piece = {
 Pieces l_piece = {
     .piece = 'l',
     .piece_size = 2,
-    .rotation_stages[0] = 1,
-    .rotation_stages[1] = 2,
-    .rotation_stages[2] = 3,
-    .rotation_stages[3] = 4,
     .array = {
         {0, 0, 0,},
         {1, 1, 1,},
@@ -88,10 +73,6 @@ Pieces l_piece = {
 Pieces t_piece = {
     .piece = 't',
     .piece_size = 2,
-    .rotation_stages[0] = 1,
-    .rotation_stages[1] = 2,
-    .rotation_stages[2] = 3,
-    .rotation_stages[3] = 4,
     .array = {
         {0, 0, 0,},
         {1, 1, 1,},

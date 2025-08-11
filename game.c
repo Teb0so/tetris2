@@ -17,7 +17,15 @@ void rotation_handler(char piece, int new_rotation){
     rotation = rotation + new_rotation;
     switch (piece) {
         case 'i':
+            if(rotation + new_rotation == -1){
+                rotation = 2;
+            }
+            else if(rotation + new_rotation == 4){
+                rotation = 1;
+            }
+            break;
         case 'o': 
+            rotation = 1;
             break;
         case 't': 
             if(rotation + new_rotation == -1){
