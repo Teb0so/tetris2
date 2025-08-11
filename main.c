@@ -3,6 +3,8 @@
 #include "./game.h"
 #include "./assets.h"
 
+char current_piece;
+
 int main(){
     initscr();
     raw();
@@ -10,7 +12,7 @@ int main(){
     noecho();
 
     while(running == true){
-        draw_piece(t_piece.piece);
+        draw_piece(current_piece);
         refresh();
         input_handler();
         clear();

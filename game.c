@@ -15,36 +15,69 @@ int rotation = 1;
 
 void rotation_handler(char piece, int new_rotation){
     rotation = rotation + new_rotation;
+    switch (piece) {
+        case 'i':
+        case 'o': 
+            break;
+        case 't': 
+            if(rotation + new_rotation == -1){
+                rotation = 4;
+            }
+            else if(rotation + new_rotation == 6){
+                rotation = 1;
+            }
+            break;
+        case 'j': 
+            if(rotation + new_rotation == -1){
+                rotation = 4;
+            }
+            else if(rotation + new_rotation == 6){
+                rotation = 1;
+            }
+            break;
+        case 'l': 
+            if(rotation + new_rotation == -1){
+                rotation = 4;
+            }
+            else if(rotation + new_rotation == 6){
+                rotation = 1;
+            }
+            break;
+        case 'z': 
+            if(rotation + new_rotation == -1){
+                rotation = 2;
+            }
+            else if(rotation + new_rotation == 4){
+                rotation = 1;
+            }
+            break;
+        case 's': 
+            if(rotation + new_rotation == -1){
+                rotation = 2;
+            }
+            else if(rotation + new_rotation == 4){
+                rotation = 1;
+            }
+            break;
+    }
 }
 
 void input_handler(){
+    current_piece = l_piece.piece;
     char ch = getch();
 
     if(ch == 'q'){
         running = false;
     }
     else if(ch == 'j'){
-        rotation_handler(t_piece.piece, - 1);
+        rotation_handler(current_piece, - 1);
     }
     else if(ch == 'k'){
-        rotation_handler(t_piece.piece, 1);
-    }
-    else if(ch == '1'){
-        rotation = 1;
-    }
-    else if(ch == '2'){
-        rotation = 2;
-    }
-    else if(ch == '3'){
-        rotation = 3;
-    }
-    else if(ch == '4'){
-        rotation = 4;
+        rotation_handler(current_piece, 1);
     }
 }
 
 void draw_piece(char piece){
-    // current_piece = piece;
 
     int array[4][4];
     int n = (sizeof(i_piece.array) / sizeof(i_piece.array[0]) * sizeof(i_piece.array[0]));
