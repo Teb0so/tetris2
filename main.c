@@ -10,7 +10,7 @@ int main(){
     noecho();
 
     while(running == true){
-        rotation_handler(t_piece.piece);
+        draw_piece(t_piece.piece);
         refresh();
         input_handler();
         clear();

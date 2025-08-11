@@ -13,11 +13,21 @@
 bool running = true;
 int rotation = 1;
 
+void rotation_handler(char piece, int new_rotation){
+    rotation = rotation + new_rotation;
+}
+
 void input_handler(){
     char ch = getch();
 
     if(ch == 'q'){
         running = false;
+    }
+    else if(ch == 'j'){
+        rotation_handler(t_piece.piece, - 1);
+    }
+    else if(ch == 'k'){
+        rotation_handler(t_piece.piece, 1);
     }
     else if(ch == '1'){
         rotation = 1;
@@ -33,7 +43,9 @@ void input_handler(){
     }
 }
 
-void rotation_handler(char piece){
+void draw_piece(char piece){
+    // current_piece = piece;
+
     int array[4][4];
     int n = (sizeof(i_piece.array) / sizeof(i_piece.array[0]) * sizeof(i_piece.array[0]));
 
