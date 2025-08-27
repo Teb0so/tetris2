@@ -11,5 +11,6 @@ extern char current_piece;
 extern void input_handler();
 extern void rotation_handler(char piece, int new_rotation);
 extern void draw_piece(char piece);
+extern char get_random_piece();
 
 #endif //GAME_H

@@ -1,17 +1,32 @@
 #include <ncurses.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 #include "./game.h"
 #include "./assets.h"
 
-// int array[3][3] = {
-//     {0, 0, 0,},
-//     {1, 1, 1,},
-//     {0, 0, 1,}
-// };
-
 bool running = true;
 int rotation = 1;
+
+char get_random_piece(){
+    srand(time(NULL));
+
+    int candidate = rand() % 7;
+
+    char piece;
+
+    switch (candidate) {
+        case 0: piece = i_piece.piece; break;
+        case 1: piece = t_piece.piece; break;
+        case 2: piece = j_piece.piece; break;
+        case 3: piece = l_piece.piece; break;
+        case 4: piece = s_piece.piece; break;
+        case 5: piece = z_piece.piece; break;
+        case 6: piece = o_piece.piece; break;
+    }
+    return piece;
+}
 
 void rotation_handler(char piece, int new_rotation){
     rotation = rotation + new_rotation;
@@ -71,7 +86,7 @@ void rotation_handler(char piece, int new_rotation){
 }
 
 void input_handler(){
-    current_piece = l_piece.piece;
+    current_piece = get_random_piece();
     char ch = getch();
 
     if(ch == 'q'){
