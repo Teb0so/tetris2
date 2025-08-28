@@ -12,6 +12,7 @@ int main(){
     noecho();
 
     while(running == true){
+        // draw_table();
         draw_piece(current_piece);
         refresh();
         input_handler();

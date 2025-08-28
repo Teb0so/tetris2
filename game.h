@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+extern int table[20][10];
+
 extern bool running;
 extern int rotation;
 extern char ch;
@@ -11,6 +13,7 @@ extern char current_piece;
 extern void input_handler();
 extern void rotation_handler(char piece, int new_rotation);
 extern void draw_piece(char piece);
+extern void draw_table();
 extern char get_random_piece();
 
 #endif //GAME_H
