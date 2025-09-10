@@ -6,8 +6,9 @@ char current_piece;
 int tick = 0;
 
 int main(){
-    initscr();
+    WINDOW* win = initscr();
     raw();
+    nodelay(win, true);
     curs_set(0);
     noecho();
 
@@ -15,10 +16,10 @@ int main(){
 
         draw_table();
         draw_piece(current_piece);
-        falling_handler();
+        // falling_handler();
         refresh();
         input_handler();
-        clear();
+        erase();
 
         tick ++;
     }

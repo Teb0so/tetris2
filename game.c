@@ -10,7 +10,7 @@
 bool running = true;
 int rotation = 1;
 
-int current_y = 0;
+int current_y = -1;
 int current_x = 4;
 
 int table[TABLE_ROWS][TABLE_COLUMNS] = {
