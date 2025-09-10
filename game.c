@@ -3,34 +3,43 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include "main.h"
 #include "./game.h"
 #include "./assets.h"
 
 bool running = true;
 int rotation = 1;
 
-int table[20][10] = {
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-    {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-    {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-    {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0}
+int current_y = 0;
+int current_x = 4;
+
+int table[TABLE_ROWS][TABLE_COLUMNS] = {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
+
+void falling_handler(){
+        current_y = current_y + 1;
+
+    }
 
 char get_random_piece(){
     srand(time(NULL));
@@ -139,6 +148,14 @@ void draw_table(){
 
 void draw_piece(char piece){
 
+    for (int i = 0; i <= TABLE_ROWS; i++) {
+        for (int j = 0; j <= TABLE_COLUMNS; j++) {
+            if (table[i][j] == 1) {
+                table[i][j] = 0;
+            }
+        }
+    }
+
     int array[4][4];
     int n = (sizeof(i_piece.array) / sizeof(i_piece.array[0]) * sizeof(i_piece.array[0]));
 
@@ -162,11 +179,8 @@ void draw_piece(char piece){
     if (rotation == 1) {
         for(int i = 0; i <= piece_size; i++){
             for(int j = 0; j <= piece_size; j++){
-                if(array[i][j] == 0){
-                    printw("  ");
-                }
-                else if(array[i][j] == 1){
-                    printw("[]");
+                if(array[i][j] == 1){
+                    table[i + current_y][j + current_x] = 1;
                 }
             }
             printw("\n");
@@ -175,11 +189,8 @@ void draw_piece(char piece){
     else if (rotation == 2) {
         for(int i = 0; i <= piece_size; i++){
             for(int j = piece_size; j >= 0; j--){
-                if(array[j][i] == 0){
-                    printw("  ");
-                }
-                else if(array[j][i] == 1){
-                    printw("[]");
+                if(array[j][i] == 1){
+                    table[i + current_y][j + current_x] = 1;
                 }
             }
             printw("\n");
@@ -188,11 +199,8 @@ void draw_piece(char piece){
     else if (rotation == 3) {
         for(int i = piece_size; i >= 0; i--){
             for(int j = piece_size; j >= 0; j--){
-                if(array[i][j] == 0){
-                    printw("  ");
-                }
-                else if(array[i][j] == 1){
-                    printw("[]");
+                if(array[i][j] == 1){
+                    table[i + current_y][j + current_x] = 1;
                 }
             }
             printw("\n");
@@ -201,11 +209,8 @@ void draw_piece(char piece){
     else if (rotation == 4) {
         for(int i = piece_size; i >= 0; i--){
             for(int j = 0; j <= piece_size; j++){
-                if(array[j][i] == 0){
-                    printw("  ");
-                }
-                else if(array[j][i] == 1){
-                    printw("[]");
+                if(array[j][i] == 1){
+                    table[i + current_y][j + current_x] = 1;
                 }
             }
             printw("\n");

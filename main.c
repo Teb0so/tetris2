@@ -1,9 +1,9 @@
 #include <ncurses.h>
 #include <stdbool.h>
 #include "./game.h"
-#include "./assets.h"
 
 char current_piece;
+int tick = 0;
 
 int main(){
     initscr();
@@ -12,11 +12,15 @@ int main(){
     noecho();
 
     while(running == true){
-        // draw_table();
+
+        draw_table();
         draw_piece(current_piece);
+        falling_handler();
         refresh();
         input_handler();
         clear();
+
+        tick ++;
     }
 
     endwin();
