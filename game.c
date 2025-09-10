@@ -7,6 +7,8 @@
 #include "./game.h"
 #include "./assets.h"
 
+char current_piece;
+
 bool running = true;
 int rotation = 1;
 
@@ -37,9 +39,11 @@ int table[TABLE_ROWS][TABLE_COLUMNS] = {
 };
 
 void falling_handler(){
+    if(tick == 10000){
         current_y = current_y + 1;
-
+        tick = 0;
     }
+}
 
 char get_random_piece(){
     srand(time(NULL));

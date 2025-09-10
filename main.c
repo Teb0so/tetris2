@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "./game.h"
 
-char current_piece;
 int tick = 0;
 
 int main(){
@@ -16,7 +15,7 @@ int main(){
 
         draw_table();
         draw_piece(current_piece);
-        // falling_handler();
+        falling_handler();
         refresh();
         input_handler();
         erase();
