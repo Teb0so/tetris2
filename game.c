@@ -7,8 +7,8 @@
 #include "./game.h"
 #include "./assets.h"
 
-char current_piece;
 
+char current_piece;
 bool running = true;
 int rotation = 1;
 
@@ -39,7 +39,7 @@ int table[TABLE_ROWS][TABLE_COLUMNS] = {
 };
 
 void falling_handler(){
-    if(tick == 10000){
+    if(tick == 90000){
         current_y = current_y + 1;
         tick = 0;
     }
@@ -122,7 +122,8 @@ void rotation_handler(char piece, int new_rotation){
 }
 
 void input_handler(){
-    current_piece = get_random_piece();
+    // current_piece = get_random_piece();
+    current_piece = t_piece.piece;
     char ch = getch();
 
     if(ch == 'q'){
@@ -133,6 +134,12 @@ void input_handler(){
     }
     else if(ch == 'k'){
         rotation_handler(current_piece, 1);
+    }
+    else if(ch == 'a'){
+        current_x--;
+    }
+    else if(ch == 'd'){
+        current_x++;
     }
 }
 
@@ -191,20 +198,19 @@ void draw_piece(char piece){
         }
     }
     else if (rotation == 2) {
-        for(int i = 0; i <= piece_size; i++){
-            for(int j = piece_size; j >= 0; j--){
-                if(array[j][i] == 1){
-                    table[i + current_y][j + current_x] = 1;
+        for (int i = 0; i <= piece_size; i++) {
+            for (int j = 0; j <= piece_size; j++) {
+                if (array[j][i] == 1) {
+                    table[i + current_y][(piece_size - j) + current_x] = 1;
                 }
             }
-            printw("\n");
         }
     }
     else if (rotation == 3) {
-        for(int i = piece_size; i >= 0; i--){
-            for(int j = piece_size; j >= 0; j--){
-                if(array[i][j] == 1){
-                    table[i + current_y][j + current_x] = 1;
+        for (int i = 0; i <= piece_size; i++) {
+            for (int j = 0; j <= piece_size; j++) {
+                if (array[j][i] == 1) {
+                    table[(piece_size - j) + current_y][i + current_x] = 1;
                 }
             }
             printw("\n");
