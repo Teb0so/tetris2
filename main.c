@@ -12,7 +12,7 @@ int main(){
     noecho();
 
     while(running == true){
-
+        get_random_piece();
         draw_table();
         draw_piece(current_piece);
         falling_handler();

@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-#define TABLE_ROWS 20
-#define TABLE_COLUMNS 10
+#define TABLE_ROWS 22
+#define TABLE_COLUMNS 12
 
 extern int table[TABLE_ROWS][TABLE_COLUMNS];
 

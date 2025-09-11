@@ -12,31 +12,58 @@ char current_piece;
 bool running = true;
 int rotation = 1;
 
-int current_y = -1;
+int current_y = 0;
 int current_x = 4;
 
 int table[TABLE_ROWS][TABLE_COLUMNS] = {
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
 };
+
+void add_piece(){
+    for (int i = 0; i <= TABLE_ROWS; i++) {
+        for (int j = 0; j <= TABLE_COLUMNS; j++) {
+            if (table[i][j] == 1) {
+                table[i][j] = 2;
+            }
+        }
+    }
+}
+
+void colision_checker(){
+    for (int i = 0; i <= TABLE_ROWS; i++) {
+        for (int j = 0; j <= TABLE_COLUMNS; j++) {
+            if (table[i][j] == 1) {
+                if (table[i + 1][j] == 2){
+                    add_piece();
+                    current_y = 0;
+                    current_x = 4;
+                }
+            }
+        }
+    }
+    rotation = 1;
+}
 
 void falling_handler(){
     if(tick == 90000){
@@ -122,8 +149,11 @@ void rotation_handler(char piece, int new_rotation){
 }
 
 void input_handler(){
-    // current_piece = get_random_piece();
-    current_piece = t_piece.piece;
+    if(current_y == 0){
+        current_piece = get_random_piece();
+        current_y ++;
+    }
+    // current_piece = t_piece.piece;
     char ch = getch();
 
     if(ch == 'q'){
@@ -141,15 +171,18 @@ void input_handler(){
     else if(ch == 'd'){
         current_x++;
     }
+    else if(ch == 's'){
+        current_y++;
+    }
 }
 
 void draw_table(){
-    for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 10; j++){
+    for(int i = 1; i < 21; i++){
+        for(int j = 1; j < 11; j++){
             if(table[i][j] == 0){
                 printw(" .");
             }
-            else if(table[i][j] == 1){
+            else if(table[i][j] == 1 || table[i][j] == 2){
                 printw("[]");
             }
         }
@@ -159,6 +192,7 @@ void draw_table(){
 
 void draw_piece(char piece){
 
+    //clear previous piece
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
             if (table[i][j] == 1) {
@@ -226,6 +260,7 @@ void draw_piece(char piece){
             printw("\n");
         }
     }
+    colision_checker();
 }
 
 
