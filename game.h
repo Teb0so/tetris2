@@ -18,9 +18,11 @@ extern char current_piece;
 
 extern void input_handler();
 extern void rotation_handler(char piece, int new_rotation);
-void falling_handler();
+extern void falling_handler();
 extern void draw_piece(char piece);
 extern void draw_table();
-extern char get_random_piece();
+extern void get_random_piece();
+extern void colision_checker();
+extern void add_piece();
 
 #endif //GAME_H

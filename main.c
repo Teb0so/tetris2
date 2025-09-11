@@ -4,6 +4,10 @@
 
 int tick = 0;
 
+void tick_dbg(){
+    printw("tick: %d", tick);
+}
+
 int main(){
     WINDOW* win = initscr();
     raw();
@@ -11,10 +15,11 @@ int main(){
     curs_set(0);
     noecho();
 
+    get_random_piece();
     while(running == true){
-        get_random_piece();
         draw_table();
         draw_piece(current_piece);
+        tick_dbg();
         falling_handler();
         refresh();
         input_handler();

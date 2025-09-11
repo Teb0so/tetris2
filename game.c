@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
@@ -54,26 +55,29 @@ void colision_checker(){
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
             if (table[i][j] == 1) {
-                if (table[i + 1][j] == 2){
+                if (table[i + 1][j] != 1 && table[i + 1][j] != 0){
                     add_piece();
+                    get_random_piece();
+                    rotation = 1;
                     current_y = 0;
                     current_x = 4;
                 }
             }
         }
     }
-    rotation = 1;
 }
 
 void falling_handler(){
     if(tick == 90000){
         current_y = current_y + 1;
         tick = 0;
+        colision_checker();
     }
 }
 
-char get_random_piece(){
-    srand(time(NULL));
+void get_random_piece(){
+    unsigned int seed = (unsigned int)(clock());
+    srand(seed);
 
     int candidate = rand() % 7;
 
@@ -88,12 +92,13 @@ char get_random_piece(){
         case 5: piece = z_piece.piece; break;
         case 6: piece = o_piece.piece; break;
     }
-    return piece;
+    current_piece = piece;
+    // current_piece = o_piece.piece;
 }
 
 void rotation_handler(char piece, int new_rotation){
     rotation = rotation + new_rotation;
-    switch (piece) {
+switch (piece) {
         case 'i':
             if(rotation + new_rotation == -1){
                 rotation = 2;
@@ -135,6 +140,7 @@ void rotation_handler(char piece, int new_rotation){
             }
             else if(rotation + new_rotation == 4){
                 rotation = 1;
+
             }
             break;
         case 's': 
@@ -149,10 +155,6 @@ void rotation_handler(char piece, int new_rotation){
 }
 
 void input_handler(){
-    if(current_y == 0){
-        current_piece = get_random_piece();
-        current_y ++;
-    }
     // current_piece = t_piece.piece;
     char ch = getch();
 
@@ -244,7 +246,7 @@ void draw_piece(char piece){
         for (int i = 0; i <= piece_size; i++) {
             for (int j = 0; j <= piece_size; j++) {
                 if (array[j][i] == 1) {
-                    table[(piece_size - j) + current_y][i + current_x] = 1;
+                    table[(piece_size - j) + current_y][(piece_size - i) + current_x] = 1;
                 }
             }
             printw("\n");
@@ -254,13 +256,12 @@ void draw_piece(char piece){
         for(int i = piece_size; i >= 0; i--){
             for(int j = 0; j <= piece_size; j++){
                 if(array[j][i] == 1){
-                    table[i + current_y][j + current_x] = 1;
+                    table[(piece_size - i) + current_y][j + current_x] = 1;
                 }
             }
             printw("\n");
         }
     }
-    colision_checker();
 }
 
 
