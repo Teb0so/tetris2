@@ -93,7 +93,7 @@ void get_random_piece(){
         case 6: piece = o_piece.piece; break;
     }
     current_piece = piece;
-    // current_piece = o_piece.piece;
+    // current_piece = i_piece.piece;
 }
 
 void rotation_handler(char piece, int new_rotation){

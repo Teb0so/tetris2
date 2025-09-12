@@ -1,5 +1,18 @@
 #include "assets.h"
 
+// If you remove this dummy_piece struct, the i piece will not be printed correcly
+// don't aske me why
+Pieces dummy_piece = {
+    .piece = 'd',
+    .piece_size = 3,
+    .array = {
+        {1, 1, 1, 1,},
+        {1, 1, 1, 1,},
+        {1, 1, 1, 1,},
+        {1, 1, 1, 1,}
+    }
+};
+
 // I Piece:
 Pieces i_piece = {
     .piece = 'i',
