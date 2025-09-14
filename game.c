@@ -16,31 +16,6 @@ int rotation = 1;
 int current_y = 0;
 int current_x = 4;
 
-int table[TABLE_ROWS][TABLE_COLUMNS] = {
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
-};
-
 void add_piece(){
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
@@ -154,6 +129,50 @@ switch (piece) {
     }
 }
 
+enum direction {
+    LEFT,
+    DOWN,
+    RIGHT
+};
+
+void check_valid_movement(int direction){
+    switch (direction){
+        case LEFT:
+            for (int j = 0; j <= TABLE_COLUMNS; j++) {
+                for (int i = 0; i <= TABLE_ROWS; i++) {
+                    if (table[i][j] == 1) {
+                        if (table[i][j - 1] <= 1){
+                            current_x --;
+                            return;
+                        }
+                        else{
+                            return;
+                        }
+                    }
+                }
+            }
+        break;
+        case RIGHT:
+            for (int j = TABLE_COLUMNS; j <= TABLE_COLUMNS; j--) {
+                for (int i = 0; i <= TABLE_ROWS; i++) {
+                    if (table[i][j] == 1) {
+                        if (table[i][j + 1] <= 1){
+                            current_x ++;
+                            return;
+                        }
+                        else{
+                            return;
+                        }
+                    }
+                }
+            }
+        break;
+        case DOWN:
+            current_y ++;
+            colision_checker();
+    }
+}
+
 void input_handler(){
     // current_piece = t_piece.piece;
     char ch = getch();
@@ -168,13 +187,14 @@ void input_handler(){
         rotation_handler(current_piece, 1);
     }
     else if(ch == 'a'){
-        current_x--;
+        // current_x--;
+        check_valid_movement(LEFT);
     }
     else if(ch == 'd'){
-        current_x++;
+        check_valid_movement(RIGHT);
     }
     else if(ch == 's'){
-        current_y++;
+        check_valid_movement(DOWN);
     }
 }
 

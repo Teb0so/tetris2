@@ -3,11 +3,6 @@
 
 #include <stdbool.h>
 
-#define TABLE_ROWS 22
-#define TABLE_COLUMNS 12
-
-extern int table[TABLE_ROWS][TABLE_COLUMNS];
-
 extern int current_y;
 extern int current_x;
 

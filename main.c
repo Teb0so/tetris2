@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <unistd.h>
 #include <stdbool.h>
 #include "./game.h"
 
@@ -26,6 +27,7 @@ int main(){
         erase();
 
         tick ++;
+        // usleep(100000);
     }
 
     endwin();

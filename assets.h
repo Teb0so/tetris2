@@ -1,6 +1,12 @@
 #ifndef ASSETS_H
 #define ASSETS_H
 
+#define TABLE_ROWS 22
+#define TABLE_COLUMNS 12
+
+extern int table[TABLE_ROWS][TABLE_COLUMNS];
+
+
 extern int i_array[4][4];
 extern int o_array[4][4];
 extern int t_array[3][3];
