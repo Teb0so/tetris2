@@ -6,13 +6,17 @@
 extern int current_y;
 extern int current_x;
 
+extern int tick;
+
 extern bool running;
 extern int rotation;
 extern char ch;
 extern char current_piece;
 
+extern void tick_dbg();
+
 extern void input_handler();
-extern void rotation_handler(char piece, int new_rotation);
+extern void rotation_handler(int new_rotation);
 extern void falling_handler();
 extern void draw_piece(char piece);
 extern void draw_table();

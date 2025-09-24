@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#include "main.h"
 #include "./game.h"
 #include "./assets.h"
 
@@ -16,7 +15,13 @@ int rotation = 1;
 int current_y = 0;
 int current_x = 4;
 
-void add_piece(){
+int tick = 0;
+
+void tick_dbg(){
+    printw("tick: %d", tick);
+}
+
+void add_piece() {
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
             if (table[i][j] == 1) {
@@ -26,11 +31,11 @@ void add_piece(){
     }
 }
 
-void colision_checker(){
+void colision_checker() {
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
             if (table[i][j] == 1) {
-                if (table[i + 1][j] != 1 && table[i + 1][j] != 0){
+                if (table[i + 1][j] != 1 && table[i + 1][j] != 0) {
                     add_piece();
                     get_random_piece();
                     rotation = 1;
@@ -42,15 +47,15 @@ void colision_checker(){
     }
 }
 
-void falling_handler(){
-    if(tick == 90000){
+void falling_handler() {
+    if(tick == 90000) {
         current_y = current_y + 1;
         tick = 0;
         colision_checker();
     }
 }
 
-void get_random_piece(){
+void get_random_piece() {
     unsigned int seed = (unsigned int)(clock());
     srand(seed);
 
@@ -71,14 +76,30 @@ void get_random_piece(){
     // current_piece = i_piece.piece;
 }
 
-void rotation_handler(char piece, int new_rotation){
+void rotation_checker(int new_rotation) {
+    int original_table[TABLE_ROWS][TABLE_COLUMNS];
+    memcpy(original_table, table, sizeof(table));
+
+    rotation_handler(new_rotation);
+
+    for (int i = 0; i < TABLE_ROWS; i++) {
+        for (int j = 0; j < TABLE_COLUMNS; j++) {
+            if (table[i][j] == 1 && original_table[i][j] == 2) {
+                rotation_handler(- new_rotation);
+                memcpy(table, original_table, sizeof(table));
+            }
+        }
+    }
+}
+
+void rotation_handler(int new_rotation) {
     rotation = rotation + new_rotation;
-switch (piece) {
+    switch (current_piece) {
         case 'i':
-            if(rotation + new_rotation == -1){
+            if(rotation + new_rotation == -1) {
                 rotation = 2;
             }
-            else if(rotation + new_rotation == 4){
+            else if(rotation + new_rotation == 4) {
                 rotation = 1;
             }
             break;
@@ -86,43 +107,43 @@ switch (piece) {
             rotation = 1;
             break;
         case 't': 
-            if(rotation + new_rotation == -1){
+            if(rotation + new_rotation == -1) {
                 rotation = 4;
             }
-            else if(rotation + new_rotation == 6){
+            else if(rotation + new_rotation == 6) {
                 rotation = 1;
             }
             break;
         case 'j': 
-            if(rotation + new_rotation == -1){
+            if(rotation + new_rotation == -1) {
                 rotation = 4;
             }
-            else if(rotation + new_rotation == 6){
+            else if(rotation + new_rotation == 6) {
                 rotation = 1;
             }
             break;
         case 'l': 
-            if(rotation + new_rotation == -1){
+            if(rotation + new_rotation == -1) {
                 rotation = 4;
             }
-            else if(rotation + new_rotation == 6){
+            else if(rotation + new_rotation == 6) {
                 rotation = 1;
             }
             break;
         case 'z': 
-            if(rotation + new_rotation == -1){
+            if(rotation + new_rotation == -1) {
                 rotation = 2;
             }
-            else if(rotation + new_rotation == 4){
+            else if(rotation + new_rotation == 4) {
                 rotation = 1;
 
             }
             break;
         case 's': 
-            if(rotation + new_rotation == -1){
+            if(rotation + new_rotation == -1) {
                 rotation = 2;
             }
-            else if(rotation + new_rotation == 4){
+            else if(rotation + new_rotation == 4) {
                 rotation = 1;
             }
             break;
@@ -135,13 +156,13 @@ enum direction {
     RIGHT
 };
 
-void check_valid_movement(int direction){
-    switch (direction){
+void check_valid_movement(int direction) {
+    switch (direction) {
         case LEFT:
             for (int j = 0; j <= TABLE_COLUMNS; j++) {
                 for (int i = 0; i <= TABLE_ROWS; i++) {
                     if (table[i][j] == 1) {
-                        if (table[i][j - 1] <= 1){
+                        if (table[i][j - 1] <= 1) {
                             current_x --;
                             return;
                         }
@@ -156,7 +177,7 @@ void check_valid_movement(int direction){
             for (int j = TABLE_COLUMNS; j <= TABLE_COLUMNS; j--) {
                 for (int i = 0; i <= TABLE_ROWS; i++) {
                     if (table[i][j] == 1) {
-                        if (table[i][j + 1] <= 1){
+                        if (table[i][j + 1] <= 1) {
                             current_x ++;
                             return;
                         }
@@ -173,38 +194,38 @@ void check_valid_movement(int direction){
     }
 }
 
-void input_handler(){
+void input_handler() {
     // current_piece = t_piece.piece;
     char ch = getch();
 
-    if(ch == 'q'){
+    if(ch == 'q') {
         running = false;
     }
-    else if(ch == 'j'){
-        rotation_handler(current_piece, - 1);
+    else if(ch == 'j') {
+        rotation_checker(- 1);
     }
-    else if(ch == 'k'){
-        rotation_handler(current_piece, 1);
+    else if(ch == 'k') {
+        rotation_checker(1);
     }
-    else if(ch == 'a'){
+    else if(ch == 'a') {
         // current_x--;
         check_valid_movement(LEFT);
     }
-    else if(ch == 'd'){
+    else if(ch == 'd') {
         check_valid_movement(RIGHT);
     }
-    else if(ch == 's'){
+    else if(ch == 's') {
         check_valid_movement(DOWN);
     }
 }
 
-void draw_table(){
-    for(int i = 1; i < 21; i++){
-        for(int j = 1; j < 11; j++){
-            if(table[i][j] == 0){
+void draw_table() {
+    for(int i = 1; i < 21; i++) {
+        for(int j = 1; j < 11; j++) {
+            if(table[i][j] == 0) {
                 printw(" .");
             }
-            else if(table[i][j] == 1 || table[i][j] == 2){
+            else if(table[i][j] == 1 || table[i][j] == 2) {
                 printw("[]");
             }
         }
@@ -212,7 +233,7 @@ void draw_table(){
     }
 }
 
-void draw_piece(char piece){
+void draw_piece(char piece) {
 
     //clear previous piece
     for (int i = 0; i <= TABLE_ROWS; i++) {
@@ -236,7 +257,7 @@ void draw_piece(char piece){
         case 'z': memcpy(array, z_piece.array, n); break;
     }
     int piece_size;
-    if (piece == 'i' || piece == 'o'){
+    if (piece == 'i' || piece == 'o') {
         piece_size = 3;
     }
     else{
@@ -244,9 +265,9 @@ void draw_piece(char piece){
     }
 
     if (rotation == 1) {
-        for(int i = 0; i <= piece_size; i++){
-            for(int j = 0; j <= piece_size; j++){
-                if(array[i][j] == 1){
+        for(int i = 0; i <= piece_size; i++) {
+            for(int j = 0; j <= piece_size; j++) {
+                if(array[i][j] == 1) {
                     table[i + current_y][j + current_x] = 1;
                 }
             }
@@ -273,9 +294,9 @@ void draw_piece(char piece){
         }
     }
     else if (rotation == 4) {
-        for(int i = piece_size; i >= 0; i--){
-            for(int j = 0; j <= piece_size; j++){
-                if(array[j][i] == 1){
+        for(int i = piece_size; i >= 0; i--) {
+            for(int j = 0; j <= piece_size; j++) {
+                if(array[j][i] == 1) {
                     table[(piece_size - i) + current_y][j + current_x] = 1;
                 }
             }
