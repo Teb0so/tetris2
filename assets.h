@@ -17,7 +17,7 @@ extern int s_array[3][3];
 
 typedef struct{
     char piece; // I, T, O, J, L, Z, S
-    int piece_size;
+    int count;
     int array[4][4];
 } Pieces;
 

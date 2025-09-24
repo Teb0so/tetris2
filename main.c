@@ -6,7 +6,7 @@
 #include "./game.h"
 
 #define FPS 60
-#define FRAME_TIME (1000000000 / FPS)
+#define FRAME_TIME (1000000000L / FPS)
 
 int main() {
     WINDOW* win = initscr();
@@ -18,18 +18,18 @@ int main() {
     struct timespec start, end;
 
     get_random_piece();
-    while(running == true) {
+    while(running) {
         clock_gettime(CLOCK_MONOTONIC, &start);
 
         draw_table();
         draw_piece(current_piece);
-        tick_dbg();
+        dbg_info();
         falling_handler();
         refresh();
         input_handler();
         erase();
 
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        clock_gettime(CLOCK_MONOTONIC, &end);
         long int frame_ns = (end.tv_sec - start.tv_sec) * 1000000000L +
                             (end.tv_nsec - start.tv_nsec);
 
@@ -40,7 +40,7 @@ int main() {
             nanosleep(&sleep_time, NULL);
         }
 
-        tick ++;
+        frame++;
     }
 
     endwin();

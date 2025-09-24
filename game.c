@@ -15,10 +15,17 @@ int rotation = 1;
 int current_y = 0;
 int current_x = 4;
 
-int tick = 0;
+int frame = 0;
 
-void tick_dbg(){
-    printw("tick: %d", tick);
+void dbg_info(){
+    printw("frame: %d\n", frame);
+    printw("I: %d\n", i_piece.count);
+    printw("O: %d\n", o_piece.count);
+    printw("T: %d\n", t_piece.count);
+    printw("J: %d\n", j_piece.count);
+    printw("L: %d\n", l_piece.count);
+    printw("S: %d\n", s_piece.count);
+    printw("Z: %d\n", z_piece.count);
 }
 
 void add_piece() {
@@ -48,9 +55,9 @@ void colision_checker() {
 }
 
 void falling_handler() {
-    if(tick == 90000) {
+    if(frame == 23) {
         current_y = current_y + 1;
-        tick = 0;
+        frame = 0;
         colision_checker();
     }
 }
@@ -64,13 +71,13 @@ void get_random_piece() {
     char piece;
 
     switch (candidate) {
-        case 0: piece = i_piece.piece; break;
-        case 1: piece = t_piece.piece; break;
-        case 2: piece = j_piece.piece; break;
-        case 3: piece = l_piece.piece; break;
-        case 4: piece = s_piece.piece; break;
-        case 5: piece = z_piece.piece; break;
-        case 6: piece = o_piece.piece; break;
+        case 0: piece = i_piece.piece; ++i_piece.count; break;
+        case 1: piece = t_piece.piece; ++t_piece.count; break;
+        case 2: piece = j_piece.piece; ++j_piece.count; break;
+        case 3: piece = l_piece.piece; ++l_piece.count; break;
+        case 4: piece = s_piece.piece; ++s_piece.count; break;
+        case 5: piece = z_piece.piece; ++z_piece.count; break;
+        case 6: piece = o_piece.piece; ++o_piece.count; break;
     }
     current_piece = piece;
     // current_piece = i_piece.piece;

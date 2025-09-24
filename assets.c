@@ -30,7 +30,7 @@ int table[TABLE_ROWS][TABLE_COLUMNS] = {
 // don't ask me why
 Pieces dummy_piece = {
     .piece = 'd',
-    .piece_size = 3,
+    .count = 0,
     .array = {
         {1, 1, 1, 1,},
         {1, 1, 1, 1,},
@@ -42,7 +42,7 @@ Pieces dummy_piece = {
 // I Piece:
 Pieces i_piece = {
     .piece = 'i',
-    .piece_size = 3,
+    .count = 0,
     .array = {
         {0, 0, 0, 0,},
         {0, 0, 0, 0,},
@@ -54,7 +54,7 @@ Pieces i_piece = {
 // O Piece:
 Pieces o_piece = {
     .piece = 'o',
-    .piece_size = 3,
+    .count = 0,
     .array = {
         {0, 0, 0, 0,},
         {0, 1, 1, 0,},
@@ -67,7 +67,7 @@ Pieces o_piece = {
 // S Piece:
 Pieces s_piece = {
     .piece = 's',
-    .piece_size = 2,
+    .count = 0,
     .array = {
         {0, 0, 0,},
         {0, 1, 1,},
@@ -78,7 +78,7 @@ Pieces s_piece = {
 // Z Piece:
 Pieces z_piece = {
     .piece = 'z',
-    .piece_size = 2,
+    .count = 0,
     .array = {
         {0, 0, 0,},
         {1, 1, 0,},
@@ -89,7 +89,7 @@ Pieces z_piece = {
 // J Piece:
 Pieces j_piece = {
     .piece = 'j',
-    .piece_size = 2,
+    .count = 0,
     .array = {
         {0, 0, 0,},
         {1, 1, 1,},
@@ -100,7 +100,7 @@ Pieces j_piece = {
 // L Piece:
 Pieces l_piece = {
     .piece = 'l',
-    .piece_size = 2,
+    .count = 0,
     .array = {
         {0, 0, 0,},
         {1, 1, 1,},
@@ -111,7 +111,7 @@ Pieces l_piece = {
 // L Piece:
 Pieces t_piece = {
     .piece = 't',
-    .piece_size = 2,
+    .count = 0,
     .array = {
         {0, 0, 0,},
         {1, 1, 1,},
