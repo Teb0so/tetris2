@@ -7,11 +7,7 @@
 #include "./game.h"
 #include "./assets.h"
 
-void game_init(Game *g) {
-    g->running = true;
-}
-
-bool game_get_state(Game*g) {
+bool game_get_interrupt(Game*g) {
     return g->running;
 }
 
@@ -208,7 +204,7 @@ void input_handler(Game *g) {
     char ch = getch();
 
     if(ch == 'q') {
-        g->running = false;
+        game_interrupt(g);
     }
     else if(ch == 'j') {
         rotation_checker(g, - 1);

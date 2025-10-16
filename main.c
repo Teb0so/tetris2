@@ -9,6 +9,11 @@
 #define FRAME_TIME (1000000000L / FPS)
 
 int main() {
+    Game g;
+
+    game_init(&g);
+    bool running = game_get_state(&g);
+
     WINDOW* win = initscr();
     raw();
     nodelay(win, true);
@@ -17,16 +22,16 @@ int main() {
 
     struct timespec start, end;
 
-    get_random_piece();
+    get_random_piece(&g);
     while(running) {
         clock_gettime(CLOCK_MONOTONIC, &start);
 
         draw_table();
-        draw_piece(current_piece);
-        dbg_info();
-        falling_handler();
+        draw_piece(&g);
+        dbg_info(&g);
+        falling_handler(&g);
         refresh();
-        input_handler();
+        input_handler(&g);
         erase();
 
         clock_gettime(CLOCK_MONOTONIC, &end);
@@ -40,7 +45,8 @@ int main() {
             nanosleep(&sleep_time, NULL);
         }
 
-        frame++;
+        game_increase_frame(&g);
+        running = game_get_state(&g);
     }
 
     endwin();
