@@ -8,6 +8,9 @@
 #include "./assets.h"
 
 void game_init(Game *g) {
+    g->current_piece.x = 4;
+    g->current_piece.y = 0;
+    g->current_piece.rotation = 1;
     g->running = true;
 }
 
