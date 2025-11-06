@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <stdbool.h>
+#include "assets.h"
 
 typedef struct {
     char piece;
@@ -12,8 +13,9 @@ typedef struct {
 
 typedef struct {
     CurrentPiece current_piece;
+    Table table;
     int frame;
-    int running;
+    bool running;
 } Game;
 
 extern void game_init(Game *g);
@@ -24,9 +26,9 @@ extern void input_handler(Game *g);
 extern void rotation_handler(Game *g, int new_rotation);
 extern void falling_handler(Game *g);
 extern void draw_piece(Game *g);
-extern void draw_table();
+extern void draw_table(Game *g);
 extern void get_random_piece(Game *g);
 extern void colision_checker(Game *g);
-extern void add_piece();
+extern void add_piece(Game *g);
 
 #endif //GAME_H

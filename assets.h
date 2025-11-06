@@ -4,8 +4,11 @@
 #define TABLE_ROWS 22
 #define TABLE_COLUMNS 12
 
-extern int table[TABLE_ROWS][TABLE_COLUMNS];
+typedef struct {
+    int tiles[TABLE_ROWS][TABLE_COLUMNS];
+} Table;
 
+extern void table_init(Table *t);
 
 extern int i_array[4][4];
 extern int o_array[4][4];

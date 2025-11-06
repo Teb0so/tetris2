@@ -8,6 +8,7 @@
 #include "./assets.h"
 
 void game_init(Game *g) {
+    table_init(&g->table);
     g->current_piece.x = 4;
     g->current_piece.y = 0;
     g->current_piece.rotation = 1;
@@ -33,11 +34,11 @@ void dbg_info(Game *g){
     printw("Z: %d\n", z_piece.count);
 }
 
-void add_piece() {
+void add_piece(Game *g) {
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
-            if (table[i][j] == 1) {
-                table[i][j] = 2;
+            if (g->table.tiles[i][j] == 1) {
+                g->table.tiles[i][j] = 2;
             }
         }
     }
@@ -46,9 +47,9 @@ void add_piece() {
 void colision_checker(Game *g) {
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
-            if (table[i][j] == 1) {
-                if (table[i + 1][j] != 1 && table[i + 1][j] != 0) {
-                    add_piece();
+            if (g->table.tiles[i][j] == 1) {
+                if (g->table.tiles[i + 1][j] != 1 && g->table.tiles[i + 1][j] != 0) {
+                    add_piece(g);
                     get_random_piece(g);
                     g->current_piece.rotation = 1;
                     g->current_piece.y = 0;
@@ -90,15 +91,15 @@ void get_random_piece(Game *g) {
 
 void rotation_checker(Game *g, int new_rotation) {
     int original_table[TABLE_ROWS][TABLE_COLUMNS];
-    memcpy(original_table, table, sizeof(table));
+    memcpy(original_table, g->table.tiles, sizeof(g->table.tiles));
 
     rotation_handler(g, new_rotation);
 
     for (int i = 0; i < TABLE_ROWS; i++) {
         for (int j = 0; j < TABLE_COLUMNS; j++) {
-            if (table[i][j] == 1 && original_table[i][j] == 2) {
+            if (g->table.tiles[i][j] == 1 && original_table[i][j] == 2) {
                 rotation_handler(g, - new_rotation);
-                memcpy(table, original_table, sizeof(table));
+                memcpy(g->table.tiles, original_table, sizeof(g->table.tiles));
             }
         }
     }
@@ -173,8 +174,8 @@ void check_valid_movement(Game *g, int direction) {
         case LEFT:
             for (int j = 0; j <= TABLE_COLUMNS; j++) {
                 for (int i = 0; i <= TABLE_ROWS; i++) {
-                    if (table[i][j] == 1) {
-                        if (table[i][j - 1] <= 1) {
+                    if (g->table.tiles[i][j] == 1) {
+                        if (g->table.tiles[i][j - 1] <= 1) {
                             g->current_piece.x --;
                             return;
                         }
@@ -188,8 +189,8 @@ void check_valid_movement(Game *g, int direction) {
         case RIGHT:
             for (int j = TABLE_COLUMNS; j <= TABLE_COLUMNS; j--) {
                 for (int i = 0; i <= TABLE_ROWS; i++) {
-                    if (table[i][j] == 1) {
-                        if (table[i][j + 1] <= 1) {
+                    if (g->table.tiles[i][j] == 1) {
+                        if (g->table.tiles[i][j + 1] <= 1) {
                             g->current_piece.x ++;
                             return;
                         }
@@ -208,7 +209,11 @@ void check_valid_movement(Game *g, int direction) {
 
 void input_handler(Game *g) {
     // current_piece = t_piece.piece;
-    char ch = getch();
+    int ch = getch();
+
+    if(ch == ERR) {
+        return;
+    }
 
     if(ch == 'q') {
         g->running = false;
@@ -231,13 +236,13 @@ void input_handler(Game *g) {
     }
 }
 
-void draw_table() {
+void draw_table(Game *g) {
     for(int i = 1; i < 21; i++) {
         for(int j = 1; j < 11; j++) {
-            if(table[i][j] == 0) {
+            if(g->table.tiles[i][j] == 0) {
                 printw(" .");
             }
-            else if(table[i][j] == 1 || table[i][j] == 2) {
+            else if(g->table.tiles[i][j] == 1 || g->table.tiles[i][j] == 2) {
                 printw("[]");
             }
         }
@@ -250,8 +255,8 @@ void draw_piece(Game *g) {
     //clear previous piece
     for (int i = 0; i <= TABLE_ROWS; i++) {
         for (int j = 0; j <= TABLE_COLUMNS; j++) {
-            if (table[i][j] == 1) {
-                table[i][j] = 0;
+            if (g->table.tiles[i][j] == 1) {
+                g->table.tiles[i][j] = 0;
             }
         }
     }
@@ -280,7 +285,7 @@ void draw_piece(Game *g) {
         for(int i = 0; i <= piece_size; i++) {
             for(int j = 0; j <= piece_size; j++) {
                 if(array[i][j] == 1) {
-                    table[i + g->current_piece.y][j + g->current_piece.x] = 1;
+                    g->table.tiles[i + g->current_piece.y][j + g->current_piece.x] = 1;
                 }
             }
             printw("\n");
@@ -290,7 +295,7 @@ void draw_piece(Game *g) {
         for (int i = 0; i <= piece_size; i++) {
             for (int j = 0; j <= piece_size; j++) {
                 if (array[j][i] == 1) {
-                    table[i + g->current_piece.y][(piece_size - j) + g->current_piece.x] = 1;
+                    g->table.tiles[i + g->current_piece.y][(piece_size - j) + g->current_piece.x] = 1;
                 }
             }
         }
@@ -299,7 +304,7 @@ void draw_piece(Game *g) {
         for (int i = 0; i <= piece_size; i++) {
             for (int j = 0; j <= piece_size; j++) {
                 if (array[j][i] == 1) {
-                    table[(piece_size - j) + g->current_piece.y][(piece_size - i) + g->current_piece.x] = 1;
+                    g->table.tiles[(piece_size - j) + g->current_piece.y][(piece_size - i) + g->current_piece.x] = 1;
                 }
             }
             printw("\n");
@@ -309,7 +314,7 @@ void draw_piece(Game *g) {
         for(int i = piece_size; i >= 0; i--) {
             for(int j = 0; j <= piece_size; j++) {
                 if(array[j][i] == 1) {
-                    table[(piece_size - i) + g->current_piece.y][j + g->current_piece.x] = 1;
+                    g->table.tiles[(piece_size - i) + g->current_piece.y][j + g->current_piece.x] = 1;
                 }
             }
             printw("\n");

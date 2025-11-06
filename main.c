@@ -3,16 +3,25 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <time.h>
+#include <stdio.h>
 #include "./game.h"
 
 #define FPS 60
 #define FRAME_TIME (1000000000L / FPS)
+
+void write_log(Game *g, int stage) {
+    FILE *log;
+    log = fopen("log.txt", "a");
+    fprintf(log, "%d - running = %d\n", stage, g->running);
+    fclose(log);
+}
 
 int main() {
     Game g;
 
     game_init(&g);
     bool running = game_get_state(&g);
+    write_log(&g, 1);
 
     WINDOW* win = initscr();
     raw();
@@ -23,10 +32,10 @@ int main() {
     struct timespec start, end;
 
     get_random_piece(&g);
-    while(running) {
+    while(g.running) {
         clock_gettime(CLOCK_MONOTONIC, &start);
 
-        draw_table();
+        draw_table(&g);
         draw_piece(&g);
         dbg_info(&g);
         falling_handler(&g);
@@ -46,9 +55,11 @@ int main() {
         }
 
         game_increase_frame(&g);
+        write_log(&g, 2);
         running = game_get_state(&g);
     }
 
     endwin();
+    write_log(&g, 3);
     return 0;
 }
