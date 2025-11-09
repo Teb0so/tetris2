@@ -35,8 +35,8 @@ void dbg_info(Game *g){
 }
 
 void add_piece(Game *g) {
-    for (int i = 0; i <= TABLE_ROWS; i++) {
-        for (int j = 0; j <= TABLE_COLUMNS; j++) {
+    for (int i = 1; i < TABLE_ROWS; i++) {
+        for (int j = 1; j < TABLE_COLUMNS; j++) {
             if (g->table.tiles[i][j] == 1) {
                 g->table.tiles[i][j] = 2;
             }
@@ -219,10 +219,10 @@ void input_handler(Game *g) {
         g->running = false;
     }
     else if(ch == 'j') {
-        rotation_checker(g, - 1);
+        rotation_handler(g, - 1);
     }
     else if(ch == 'k') {
-        rotation_checker(g, 1);
+        rotation_handler(g, 1);
     }
     else if(ch == 'a') {
         // current_x--;
@@ -237,8 +237,8 @@ void input_handler(Game *g) {
 }
 
 void draw_table(Game *g) {
-    for(int i = 1; i < 21; i++) {
-        for(int j = 1; j < 11; j++) {
+    for(int i = 1; i < TABLE_ROWS; i++) {
+        for(int j = 1; j < TABLE_COLUMNS; j++) {
             if(g->table.tiles[i][j] == 0) {
                 printw(" .");
             }
@@ -253,8 +253,8 @@ void draw_table(Game *g) {
 void draw_piece(Game *g) {
 
     //clear previous piece
-    for (int i = 0; i <= TABLE_ROWS; i++) {
-        for (int j = 0; j <= TABLE_COLUMNS; j++) {
+    for (int i = 1; i < TABLE_ROWS; i++) {
+        for (int j = 1; j < TABLE_COLUMNS; j++) {
             if (g->table.tiles[i][j] == 1) {
                 g->table.tiles[i][j] = 0;
             }

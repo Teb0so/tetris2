@@ -20,7 +20,7 @@ int main() {
     Game g;
 
     game_init(&g);
-    bool running = game_get_state(&g);
+    // bool running = game_get_state(&g);
     write_log(&g, 1);
 
     WINDOW* win = initscr();
@@ -56,7 +56,7 @@ int main() {
 
         game_increase_frame(&g);
         write_log(&g, 2);
-        running = game_get_state(&g);
+        // running = game_get_state(&g);
     }
 
     endwin();
