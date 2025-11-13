@@ -29,3 +29,52 @@ void table_init(Table *t)
     };
     memcpy(t->tiles, tiles, sizeof(tiles));
 }
+
+void set_piecearr(Piece *p, char piece)
+{
+    int piece_arr[4][4] = {0};
+
+    switch (piece) {
+        case 'l':
+            int temp_l[4][4] = {
+                {0, 0, 1, 0},
+                {1, 1, 1, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0}
+            };
+            memcpy(piece_arr, temp_l, sizeof(temp_l));
+            break;
+
+        case 's':
+            int temp_s[4][4] = {
+                {0, 0, 0, 0},
+                {0, 1, 1, 0},
+                {1, 1, 0, 0},
+                {0, 0, 0, 0}
+            };
+            memcpy(piece_arr, temp_s, sizeof(temp_s));
+            break;
+
+        case 't':
+            int temp_t[4][4] = {
+                {0, 0, 0, 0},
+                {1, 1, 1, 0},
+                {0, 1, 0, 0},
+                {0, 0, 0, 0}
+            };
+            memcpy(piece_arr, temp_t, sizeof(temp_t));
+            break;
+
+        case 'z':
+            int temp_z[4][4] = {
+                {0, 0, 0, 0},
+                {1, 1, 0, 0},
+                {0, 1, 1, 0},
+                {0, 0, 0, 0}
+            };
+            memcpy(piece_arr, temp_z, sizeof(temp_z));
+            break;
+    }
+
+    memcpy(p->piece_arr, piece_arr, sizeof(piece_arr));
+}

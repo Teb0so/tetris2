@@ -14,6 +14,16 @@ typedef struct {
     int tiles[ROWS][COLS];
 } Table;
 
-void table_init(Table *t);
+extern void table_init(Table *t);
+
+typedef struct {
+    int piece_arr[ROWS][COLS];
+    char piece;
+    int rotation;
+    int x;
+    int y;
+} Piece;
+
+extern void set_piecearr(Piece *P, char piece);
 
 #endif // ASSETS_H
