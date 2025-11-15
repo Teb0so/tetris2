@@ -2,3 +2,4 @@ log.txt
 *.o
 tetris2
 .swp
+.exrc

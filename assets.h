@@ -17,13 +17,14 @@ typedef struct {
 extern void table_init(Table *t);
 
 typedef struct {
-    int piece_arr[ROWS][COLS];
+    int array[4][4];
+    int table[ROWS][COLS];
     char piece;
     int rotation;
     int x;
     int y;
 } Piece;
 
-extern void set_piecearr(Piece *P, char piece);
+extern void set_piecearr(Piece *p);
 
 #endif // ASSETS_H

@@ -7,16 +7,16 @@
 #define FPS 60
 #define FRAME_TIME (1000000000L / FPS)
 
-static bool running = true;
-
 static void main_loop(Game *g)
 {
     struct timespec start, end;
-    while(running) {
+    while(g->running) {
         clock_gettime(CLOCK_MONOTONIC, &start);
 
         // Game logic
+        game_drawpiece(g);
         game_drawtable(g);
+        game_inputhandler(g);
 
         refresh();
         erase();
