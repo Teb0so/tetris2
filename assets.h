@@ -1,11 +1,13 @@
 #ifndef ASSETS_H
 #define ASSETS_H
 
-#define ROWS 22
-#define COLS 12
+#define ROWS 23
+#define COLS 13
 
 #define EMPTY 0
 #define TILE 1
+
+#define OFFSET 2
 
 #define EMPTY_TILE " ."
 #define FILLED_TILE "[]"

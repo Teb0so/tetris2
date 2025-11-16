@@ -45,8 +45,8 @@ void game_inputhandler(Game *g) {
 }
 
 void game_drawtable(Game *g) {
-    for(int i = 1; i < ROWS - 1; i++) {
-        for(int j = 1; j < COLS - 1; j++) {
+    for(int i = OFFSET; i < ROWS - 1; i++) {
+        for(int j = OFFSET; j < COLS - 1; j++) {
             if(g->table.tiles[i][j] == EMPTY && g->piece.table[i][j] == EMPTY) {
                 printw(EMPTY_TILE);
             }
