@@ -27,6 +27,6 @@ typedef struct {
     int y;
 } Piece;
 
-extern void set_piecearr(Piece *p);
+extern void set_piecearr(Piece *p, char piece);
 
 #endif // ASSETS_H

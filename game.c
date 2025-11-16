@@ -11,12 +11,12 @@ void game_init(Game *g) {
 
 //TODO: implement random piece getter
 void game_initpiece(Game *g) {
-    set_piecearr(&g->piece);
-    memset(g->piece.table, 0, sizeof(g->piece.table));
-    g->piece.piece = 'i';
+    g->piece.piece = 'o';
     g->piece.rotation = 0;
     g->piece.x = 4;
     g->piece.y = 10;
+    set_piecearr(&g->piece, g->piece.piece);
+    memset(g->piece.table, 0, sizeof(g->piece.table));
 }
 
 void game_movepiece(Game *g, int nx, int ny) {
@@ -64,8 +64,8 @@ void game_drawpiece(Game *g) {
     memset(g->piece.table, 0, sizeof(g->piece.table));
 
     switch(g->piece.piece) {
-        case 'o': case 'i': piece_size = 3; break;
-        default:            piece_size = 2; break;
+        case 'i': piece_size = 3; break;
+        default:  piece_size = 2; break;
     };
 
     for(int i = 0; i <= piece_size; i++) {
