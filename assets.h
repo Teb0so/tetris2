@@ -1,6 +1,8 @@
 #ifndef ASSETS_H
 #define ASSETS_H
 
+#include <stdint.h>
+
 #define ROWS 23
 #define COLS 13
 
@@ -22,9 +24,9 @@ typedef struct {
     int array[4][4];
     int table[ROWS][COLS];
     char piece;
-    int rotation;
-    int x;
-    int y;
+    uint8_t rotation;
+    uint8_t x;
+    uint8_t y;
 } Piece;
 
 extern void set_piecearr(Piece *p, char piece);

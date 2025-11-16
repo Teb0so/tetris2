@@ -11,7 +11,7 @@ void game_init(Game *g) {
 
 //TODO: implement random piece getter
 void game_initpiece(Game *g) {
-    g->piece.piece = 'o';
+    g->piece.piece = 'i';
     g->piece.rotation = 0;
     g->piece.x = 4;
     g->piece.y = 10;
@@ -19,15 +19,19 @@ void game_initpiece(Game *g) {
     memset(g->piece.table, 0, sizeof(g->piece.table));
 }
 
-void game_movepiece(Game *g, int nx, int ny) {
+// Checks if movement is valid
+bool game_checkmovement(Game *g, int nx, int ny) {
     for(int i = g->piece.y; i <= g->piece.y + 3; i++) {
         for(int j = g->piece.x; j <= g->piece.x + 3; j++) {
             if(g->piece.table[i][j] == TILE && g->table.tiles[i + ny][j + nx] == TILE) {
-                return;
+                return false;
             }
         }
     }
+    return true;
+}
 
+void game_movepiece(Game *g, int nx, int ny) {
     g->piece.x = g->piece.x + nx;
     g->piece.y = g->piece.y + ny;
 }
@@ -37,10 +41,12 @@ void game_inputhandler(Game *g) {
 
     switch(ch){
         case 'q': g->running = false; break;
-        case 'a': game_movepiece(g, - 1, 0); break;
-        case 's': game_movepiece(g, 0, 1); break;
-        case 'd': game_movepiece(g, 1, 0); break;
-        case 'w': game_movepiece(g, 0, - 1); break;
+        case 'j': g->piece.rotation --; break;
+        case 'k': g->piece.rotation ++; break;
+        case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
+        case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
+        case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
+        case 's': if (game_checkmovement(g, 0, 1)) { game_movepiece(g, 0, 1);} break;
     }
 }
 
@@ -60,6 +66,7 @@ void game_drawtable(Game *g) {
 
 void game_drawpiece(Game *g) {
     int piece_size;
+    int array[4][4];
 
     memset(g->piece.table, 0, sizeof(g->piece.table));
 
@@ -68,9 +75,22 @@ void game_drawpiece(Game *g) {
         default:  piece_size = 2; break;
     };
 
+    // Rotate piece
+    for (int i = 0; i <= piece_size; i++) {
+        for (int j = 0; j <= piece_size; j++) {
+            switch(g->piece.rotation) {
+                case 0: array[i][j] = g->piece.array[i][j]; break;
+                case 1: array[j][piece_size - i] = g->piece.array[i][j]; break;
+                case 2: array[piece_size - i][piece_size - j] = g->piece.array[i][j]; break;
+                case 3: array[piece_size - i][j] = g->piece.array[j][i]; break;
+            }
+        }
+    }
+
+    // Draw piece to falling piece table
     for(int i = 0; i <= piece_size; i++) {
         for(int j = 0; j <= piece_size; j++) {
-            if(g->piece.array[i][j] == EMPTY) {
+            if(array[i][j] == EMPTY) {
                 g->piece.table[g->piece.y + i][g->piece.x + j] = EMPTY;
             }
             else {
