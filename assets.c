@@ -1,8 +1,7 @@
 #include <string.h>
 #include "assets.h"
 
-void table_init(Table *t)
-{
+void table_init(Table *t) {
     int tiles[ROWS][COLS] = {
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -31,11 +30,11 @@ void table_init(Table *t)
 }
 
 void set_piecearr(Piece *p) {
-    const int piece_t[4][4] = {
+    const int PIECE_T[4][4] = {
         {0, 0, 0, 0,},
-        {1, 1, 1, 0,},
-        {0, 1, 0, 0,},
+        {0, 0, 0, 0,},
+        {1, 1, 1, 1,},
         {0, 0, 0, 0,}
     };
-    memcpy(p->array, piece_t, sizeof(piece_t));
+    memcpy(p->array, PIECE_T, sizeof(PIECE_T));
 }

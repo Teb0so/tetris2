@@ -1,4 +1,5 @@
 #include <curses.h>
+#include <string.h>
 #include "assets.h"
 #include "game.h"
 
@@ -8,20 +9,27 @@ void game_init(Game *g) {
     g->running = true;
 }
 
+//TODO: implement random piece getter
 void game_initpiece(Game *g) {
-    //TODO: implement random piece getter
     set_piecearr(&g->piece);
+    memset(g->piece.table, 0, sizeof(g->piece.table));
+    g->piece.piece = 'i';
+    g->piece.rotation = 0;
+    g->piece.x = 4;
+    g->piece.y = 10;
+}
 
-    for(int i = 0; i <= ROWS; i++){
-        for(int j = 0; j <= ROWS; j++){
-            g->piece.table[i][j] = 0;
+void game_movepiece(Game *g, int nx, int ny) {
+    for(int i = g->piece.y; i <= g->piece.y + 3; i++) {
+        for(int j = g->piece.x; j <= g->piece.x + 3; j++) {
+            if(g->piece.table[i][j] == TILE && g->table.tiles[i + ny][j + nx] == TILE) {
+                return;
+            }
         }
     }
 
-    g->piece.piece = 't';
-    g->piece.rotation = 0;
-    g->piece.x = 4;
-    g->piece.y = 2;
+    g->piece.x = g->piece.x + nx;
+    g->piece.y = g->piece.y + ny;
 }
 
 void game_inputhandler(Game *g) {
@@ -29,6 +37,10 @@ void game_inputhandler(Game *g) {
 
     switch(ch){
         case 'q': g->running = false; break;
+        case 'a': game_movepiece(g, - 1, 0); break;
+        case 's': game_movepiece(g, 0, 1); break;
+        case 'd': game_movepiece(g, 1, 0); break;
+        case 'w': game_movepiece(g, 0, - 1); break;
     }
 }
 
@@ -48,6 +60,8 @@ void game_drawtable(Game *g) {
 
 void game_drawpiece(Game *g) {
     int piece_size;
+
+    memset(g->piece.table, 0, sizeof(g->piece.table));
 
     switch(g->piece.piece) {
         case 'o': case 'i': piece_size = 3; break;
