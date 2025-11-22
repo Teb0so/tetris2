@@ -14,12 +14,14 @@ static void main_loop(Game *g)
         clock_gettime(CLOCK_MONOTONIC, &start);
 
         // Game logic
+        erase();
+
         game_drawpiece(g);
+        game_fallpiece(g);
         game_drawtable(g);
         game_inputhandler(g);
 
         refresh();
-        erase();
 
         clock_gettime(CLOCK_MONOTONIC , &end);
         long int frame_ns = (end.tv_sec - start.tv_sec) * 1000000000L +
@@ -29,6 +31,8 @@ static void main_loop(Game *g)
             sleep_time.tv_sec = 0;
             sleep_time.tv_nsec = FRAME_TIME - frame_ns;
             nanosleep(&sleep_time, NULL);
+
+        g->frame ++;
         }
     }
 }

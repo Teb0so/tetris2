@@ -10,6 +10,7 @@ void game_init(Game *g) {
     table_init(&g->table);
     game_initpiece(g);
     g->running = true;
+    g->frame = 0;
 }
 
 void game_randompiece(Game *g) {
@@ -30,7 +31,7 @@ void game_initpiece(Game *g) {
     game_randompiece(g);
     g->piece.rotation = 0;
     g->piece.x = 4;
-    g->piece.y = 10;
+    g->piece.y = OFFSET;
     set_piecearr(&g->piece, g->piece.piece);
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
 }
@@ -50,6 +51,31 @@ bool game_checkmovement(Game *g, int nx, int ny) {
 void game_movepiece(Game *g, int nx, int ny) {
     g->piece.x = g->piece.x + nx;
     g->piece.y = g->piece.y + ny;
+}
+
+void game_placepiece(Game *g){
+    for(int i = 0; i < ROWS; i++) {
+        for(int j = 0; j < COLS; j++) {
+            if(g->piece.table[i][j] == TILE){
+                g->table.tiles[i][j] = 1;
+            }
+        }
+    }
+    memset(g->piece.table, EMPTY, sizeof(g->piece.table));
+    g->frame = 0;
+    game_initpiece(g);
+}
+
+void game_fallpiece(Game *g){
+    if(g->frame >= 23) {
+        if(game_checkmovement(g, 0, 1)){
+            game_movepiece(g, 0, 1);
+            g->frame = 0;
+        }
+        else {
+            game_placepiece(g);
+        }
+    }
 }
 
 // Set the right new rotation depending on the current piece
