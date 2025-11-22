@@ -24,7 +24,7 @@ typedef struct {
     int array[4][4];
     int table[ROWS][COLS];
     char piece;
-    uint8_t rotation;
+    int8_t rotation;
     uint8_t x;
     uint8_t y;
 } Piece;
