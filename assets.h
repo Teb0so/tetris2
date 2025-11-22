@@ -11,6 +11,8 @@
 
 #define OFFSET 2
 
+#define PIECE_AMOUNT 7
+
 #define EMPTY_TILE " ."
 #define FILLED_TILE "[]"
 

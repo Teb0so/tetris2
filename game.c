@@ -1,22 +1,38 @@
 #include <curses.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 #include "assets.h"
 #include "game.h"
 
 void game_init(Game *g) {
+    srand(clock());
     table_init(&g->table);
     game_initpiece(g);
     g->running = true;
 }
 
-//TODO: implement random piece getter
+void game_randompiece(Game *g) {
+    uint8_t npiece = rand() % PIECE_AMOUNT;
+
+    switch(npiece) {
+        case 0: g->piece.piece = 'i'; break;
+        case 1: g->piece.piece = 'o'; break;
+        case 2: g->piece.piece = 'j'; break;
+        case 3: g->piece.piece = 'l'; break;
+        case 4: g->piece.piece = 's'; break;
+        case 5: g->piece.piece = 't'; break;
+        case 6: g->piece.piece = 'z'; break;
+    }
+}
+
 void game_initpiece(Game *g) {
-    g->piece.piece = 'j';
+    game_randompiece(g);
     g->piece.rotation = 0;
     g->piece.x = 4;
     g->piece.y = 10;
     set_piecearr(&g->piece, g->piece.piece);
-    memset(g->piece.table, 0, sizeof(g->piece.table));
+    memset(g->piece.table, EMPTY, sizeof(g->piece.table));
 }
 
 // Checks if movement is valid
