@@ -147,7 +147,8 @@ void game_inputhandler(Game *g) {
         case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
         case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
         case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
-        case 's': if (game_checkmovement(g, 0, 1)) { game_movepiece(g, 0, 1);} break;
+        case 's': if (game_checkmovement(g, 0, 1)) { game_movepiece(g, 0, 1);}
+                  else {game_placepiece(g);} break;
     }
 }
 
