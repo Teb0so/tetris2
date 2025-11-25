@@ -1,6 +1,7 @@
 #include <curses.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
 #include "assets.h"
 #include "game.h"
@@ -13,27 +14,58 @@ void game_init(Game *g) {
     g->frame = 0;
 }
 
-void game_randompiece(Game *g) {
+char randompiece() {
     uint8_t npiece = rand() % PIECE_AMOUNT;
+    char piece_char;
 
     switch(npiece) {
-        case 0: g->piece.piece = 'i'; break;
-        case 1: g->piece.piece = 'o'; break;
-        case 2: g->piece.piece = 'j'; break;
-        case 3: g->piece.piece = 'l'; break;
-        case 4: g->piece.piece = 's'; break;
-        case 5: g->piece.piece = 't'; break;
-        case 6: g->piece.piece = 'z'; break;
+        case 0: piece_char = 'i'; break;
+        case 1: piece_char = 'o'; break;
+        case 2: piece_char = 'j'; break;
+        case 3: piece_char = 'l'; break;
+        case 4: piece_char = 's'; break;
+        case 5: piece_char = 't'; break;
+        case 6: piece_char = 'z'; break;
     }
+    return piece_char;
 }
 
 void game_initpiece(Game *g) {
-    game_randompiece(g);
+    g->piece.piece = randompiece();
     g->piece.rotation = 0;
     g->piece.x = 4;
     g->piece.y = OFFSET;
     set_piecearr(&g->piece, g->piece.piece);
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
+}
+
+void game_clearline(Game* g) {
+    for(int i = 0 ; i < ROWS - 1; i++) {
+        for(int j = OFFSET; j < COLS - 1; j++) {
+            if(g->table.tiles[i][j] == EMPTY) {
+                break;
+            }
+            // Clear lines
+            if(j == 11 && i % 2 == 0) {
+                for(int k = OFFSET; k < COLS - 1; k++) {
+                    erase();
+                    g->table.tiles[i][k] = 0;
+                    game_drawtable(g);
+                    usleep(10000);
+                    refresh();
+                }
+            }
+            else if(j == 11 && i % 2 != 0) {
+                for(int k = COLS - OFFSET; k > OFFSET - 1; k--) {
+                    erase();
+                    g->table.tiles[i][k] = 0;
+                    game_drawtable(g);
+                    usleep(10000);
+                    refresh();
+                }
+            }
+        }
+    }
 }
 
 // Checks if movement is valid
@@ -67,7 +99,7 @@ void game_placepiece(Game *g){
 }
 
 void game_fallpiece(Game *g){
-    if(g->frame >= 23) {
+    if(g->frame >= 48) {
         if(game_checkmovement(g, 0, 1)){
             game_movepiece(g, 0, 1);
             g->frame = 0;

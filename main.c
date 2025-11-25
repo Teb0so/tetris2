@@ -19,6 +19,7 @@ static void main_loop(Game *g)
         game_drawpiece(g);
         game_fallpiece(g);
         game_drawtable(g);
+        game_clearline(g);
         game_inputhandler(g);
 
         refresh();

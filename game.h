@@ -17,5 +17,6 @@ extern void game_fallpiece(Game *g);
 extern void game_drawtable(Game *g);
 extern void game_drawpiece(Game *g);
 extern void game_inputhandler(Game *g);
+extern void game_clearline(Game *g);
 
 #endif // GAME_H
