@@ -31,6 +31,7 @@ char randompiece() {
 }
 
 void game_initpiece(Game *g) {
+    // g->piece.piece = 'i';
     g->piece.piece = randompiece();
     g->piece.rotation = 0;
     if(g->piece.piece == 'i') {g->piece.y = 0;} else {g->piece.y = 1;}
@@ -40,6 +41,14 @@ void game_initpiece(Game *g) {
     }
     set_piecearr(&g->piece, g->piece.piece);
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
+}
+
+void game_topoutchecker(Game *g) {
+    for(int i = OFFSET; i < COLS; i++) {
+        if(g->table.tiles[OFFSET + 1][i] == TILE && g->piece.table[OFFSET + 1][i] == TILE) {
+            g->running = false;
+        }
+    }
 }
 
 void game_shiftlines(Game *g, int line) {
@@ -56,6 +65,7 @@ void game_shiftlines(Game *g, int line) {
 
 void game_clearline(Game* g) {
     int line;
+    int cleared_lines = 0;
     for(int i = 0; i < ROWS - 1; i++) {
         for(int j = OFFSET; j < COLS - 1; j++) {
             if(g->table.tiles[i][j] == EMPTY) {
@@ -70,6 +80,17 @@ void game_clearline(Game* g) {
                     usleep(10000);
                     refresh();
                     line = i;
+                }
+                cleared_lines++;
+                // Blink screen on tetris
+                if(cleared_lines == 4) {
+                    for(int b = 0; b <= 8; b++) {
+                        clear();
+                        usleep(50000);
+                        game_drawtable(g);
+                        usleep(50000);
+                        refresh();
+                    }
                 }
                 game_shiftlines(g, line);
                 i = 0;

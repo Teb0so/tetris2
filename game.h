@@ -12,6 +12,7 @@ typedef struct {
 } Game;
 
 extern void game_init(Game *g);
+extern void game_topoutchecker(Game *g);
 extern void game_initpiece(Game *g);
 extern void game_fallpiece(Game *g);
 extern void game_drawtable(Game *g);
