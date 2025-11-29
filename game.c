@@ -33,8 +33,11 @@ char randompiece() {
 void game_initpiece(Game *g) {
     g->piece.piece = randompiece();
     g->piece.rotation = 0;
-    g->piece.x = 4;
-    g->piece.y = OFFSET;
+    if(g->piece.piece == 'i') {g->piece.y = 0;} else {g->piece.y = 1;}
+    switch(g->piece.piece) {
+        case 'i': case 'o': g->piece.x = OFFSET + 3; break;
+        default:  g->piece.x = OFFSET + 4; break;
+    }
     set_piecearr(&g->piece, g->piece.piece);
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
 }
