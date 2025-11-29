@@ -39,30 +39,37 @@ void game_initpiece(Game *g) {
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
 }
 
+void game_shiftlines(Game *g, int line) {
+    // Shift lines down
+    for(int i = line; i > 0; i--) {
+        for(int j = OFFSET; j < COLS - 1; j++) {
+            g->table.tiles[i][j] = g->table.tiles[i - 1][j];
+        }
+    }
+    for (int i = OFFSET; i < COLS - 1; i++) {
+        g->table.tiles[0][i] = EMPTY;
+    }
+}
+
 void game_clearline(Game* g) {
-    for(int i = 0 ; i < ROWS - 1; i++) {
+    int line;
+    for(int i = 0; i < ROWS - 1; i++) {
         for(int j = OFFSET; j < COLS - 1; j++) {
             if(g->table.tiles[i][j] == EMPTY) {
                 break;
             }
             // Clear lines
-            if(j == 11 && i % 2 == 0) {
+            if(j == 11) {
                 for(int k = OFFSET; k < COLS - 1; k++) {
                     erase();
                     g->table.tiles[i][k] = 0;
                     game_drawtable(g);
                     usleep(10000);
                     refresh();
+                    line = i;
                 }
-            }
-            else if(j == 11 && i % 2 != 0) {
-                for(int k = COLS - OFFSET; k > OFFSET - 1; k--) {
-                    erase();
-                    g->table.tiles[i][k] = 0;
-                    game_drawtable(g);
-                    usleep(10000);
-                    refresh();
-                }
+                game_shiftlines(g, line);
+                i = 0;
             }
         }
     }
