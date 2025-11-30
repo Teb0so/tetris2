@@ -20,6 +20,7 @@ static void main_loop(Game *g)
         game_fallpiece(g);
         game_topoutchecker(g);
         game_drawtable(g);
+        game_drawscore(g);
         game_clearline(g);
         game_inputhandler(g);
 

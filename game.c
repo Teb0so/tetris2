@@ -12,6 +12,11 @@ void game_init(Game *g) {
     game_initpiece(g);
     g->running = true;
     g->frame = 0;
+    g->level = 0;
+}
+
+void game_score(Game *g, int score) {
+    g->score = g->score + score;
 }
 
 char randompiece() {
@@ -82,20 +87,17 @@ void game_clearline(Game* g) {
                     line = i;
                 }
                 cleared_lines++;
-                // Blink screen on tetris
-                if(cleared_lines == 4) {
-                    for(int b = 0; b <= 8; b++) {
-                        clear();
-                        usleep(50000);
-                        game_drawtable(g);
-                        usleep(50000);
-                        refresh();
-                    }
-                }
                 game_shiftlines(g, line);
                 i = 0;
             }
         }
+    }
+    // Score
+    switch (cleared_lines) {
+        case (1): game_score(g, 40   * (g->level + 1)); break;
+        case (2): game_score(g, 100  * (g->level + 1)); break;
+        case (3): game_score(g, 300  * (g->level + 1)); break;
+        case (4): game_score(g, 1200 * (g->level + 1)); break;
     }
 }
 
@@ -213,6 +215,10 @@ void game_inputhandler(Game *g) {
         case 's': if (game_checkmovement(g, 0, 1)) { game_movepiece(g, 0, 1);}
                   else {game_placepiece(g);} break;
     }
+}
+
+void game_drawscore(Game *g) {
+    mvprintw(0, 30, "Score: %d", g->score);
 }
 
 void game_drawtable(Game *g) {
