@@ -13,6 +13,7 @@ void game_init(Game *g) {
     g->running = true;
     g->frame = 0;
     g->level = 0;
+    g->lines = 0;
 }
 
 void game_score(Game *g, int score) {
@@ -99,6 +100,7 @@ void game_clearline(Game* g) {
         case (3): game_score(g, 300  * (g->level + 1)); break;
         case (4): game_score(g, 1200 * (g->level + 1)); break;
     }
+    g->lines = g->lines + cleared_lines;
 }
 
 // Checks if movement is valid
@@ -126,13 +128,55 @@ void game_placepiece(Game *g){
             }
         }
     }
+    game_score(g, g->level + 1);
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
     g->frame = 0;
     game_initpiece(g);
 }
 
-void game_fallpiece(Game *g){
-    if(g->frame >= 48) {
+void game_levelchecker(Game *g) {
+    if((unsigned int) g->lines / 10 > g->level) {
+        g->level = (unsigned int) g->lines / 10;
+    }
+}
+
+void game_fallpiece(Game *g) {
+    int gravity;
+
+    switch(g->level) {
+        case 0: gravity = 48; break;
+        case 1: gravity = 43; break;
+        case 2: gravity = 38; break;
+        case 3: gravity = 33; break;
+        case 4: gravity = 28; break;
+        case 5: gravity = 23; break;
+        case 6: gravity = 18; break;
+        case 7: gravity = 13; break;
+        case 8: gravity = 8; break;
+        case 9: gravity = 6; break;
+        case 10:
+        case 11:
+        case 12: gravity = 5; break;
+        case 13:
+        case 14:
+        case 15: gravity = 4; break;
+        case 16:
+        case 17:
+        case 18: gravity = 3; break;
+        case 19:
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+        case 24:
+        case 25:
+        case 26:
+        case 27:
+        case 28: gravity = 2; break;
+        default: gravity = 1; break;
+    }
+
+    if(g->frame >= gravity) {
         if(game_checkmovement(g, 0, 1)){
             game_movepiece(g, 0, 1);
             g->frame = 0;
@@ -209,7 +253,7 @@ void game_inputhandler(Game *g) {
         case 'q': g->running = false; break;
         case 'j': if (game_rotatepiece(g, game_checkrotation(g, - 1))) {g->piece.rotation = game_checkrotation(g, - 1);} break;
         case 'k': if (game_rotatepiece(g, game_checkrotation(g, 1))) {g->piece.rotation = game_checkrotation(g, 1);} break;
-        case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
+        // case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
         case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
         case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
         case 's': if (game_checkmovement(g, 0, 1)) { game_movepiece(g, 0, 1);}
@@ -217,8 +261,10 @@ void game_inputhandler(Game *g) {
     }
 }
 
-void game_drawscore(Game *g) {
-    mvprintw(0, 30, "Score: %d", g->score);
+void game_drawstats(Game *g) {
+    mvprintw(0, 30, "Level: %d", g->level);
+    mvprintw(1, 30, "Lines: %d", g->lines);
+    mvprintw(2, 30, "Score: %d", g->score);
 }
 
 void game_drawtable(Game *g) {
