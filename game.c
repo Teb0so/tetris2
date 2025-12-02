@@ -246,6 +246,19 @@ bool game_rotatepiece(Game *g, int nr) {
     return true;
 }
 
+void game_softdrop(Game *g) {
+    if (game_checkmovement(g, 0, 1)) {
+        game_movepiece(g, 0, 1);
+    }
+    // Prevent the falling piece entering a placed piece on soft drop
+    else if (!game_checkmovement(g, 0, 0)) {
+        game_movepiece(g, 0, - 1);
+    }
+    else {
+        game_placepiece(g);
+    }
+}
+
 void game_inputhandler(Game *g) {
     int ch = getch();
 
@@ -256,15 +269,14 @@ void game_inputhandler(Game *g) {
         // case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
         case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
         case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
-        case 's': if (game_checkmovement(g, 0, 1)) { game_movepiece(g, 0, 1);}
-                  else {game_placepiece(g);} break;
+        case 's': game_softdrop(g); break;
     }
 }
 
 void game_drawstats(Game *g) {
-    mvprintw(0, 30, "Level: %d", g->level);
-    mvprintw(1, 30, "Lines: %d", g->lines);
-    mvprintw(2, 30, "Score: %d", g->score);
+    mvprintw(0, 24, "Level: %d", g->level);
+    mvprintw(1, 24, "Lines: %d", g->lines);
+    mvprintw(2, 24, "Score: %d", g->score);
 }
 
 void game_drawtable(Game *g) {
