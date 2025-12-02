@@ -5,13 +5,18 @@
 #include "assets.h"
 
 typedef struct {
-    Table table;
-    Piece piece;
-    int frame;
-    bool running;
     unsigned int score;
     unsigned int level;
     unsigned int lines;
+} Score;
+
+typedef struct {
+    Table table;
+    Piece piece;
+    Score score;
+    int frame;
+    bool running;
+    bool preview;
 } Game;
 
 extern void game_init(Game *g);

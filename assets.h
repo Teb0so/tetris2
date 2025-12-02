@@ -16,6 +16,27 @@
 #define EMPTY_TILE " ."
 #define FILLED_TILE "[]"
 
+#define L1_PREVIEW_I " "
+#define L2_PREVIEW_I "[][][][]"
+
+#define L1_PREVIEW_O "  [][]"
+#define L2_PREVIEW_O "  [][]"
+
+#define L1_PREVIEW_T " [][][]"
+#define L2_PREVIEW_T "   []"
+
+#define L1_PREVIEW_J " [][][]"
+#define L2_PREVIEW_J "     []"
+
+#define L1_PREVIEW_L " [][][]"
+#define L2_PREVIEW_L " []"
+
+#define L1_PREVIEW_S "   [][]"
+#define L2_PREVIEW_S " [][]"
+
+#define L1_PREVIEW_Z " [][]"
+#define L2_PREVIEW_Z "   [][]"
+
 typedef struct {
     int tiles[ROWS][COLS];
 } Table;
@@ -26,6 +47,7 @@ typedef struct {
     int array[4][4];
     int table[ROWS][COLS];
     char piece;
+    char next;
     int8_t rotation;
     uint8_t x;
     uint8_t y;

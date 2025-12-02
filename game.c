@@ -6,20 +6,6 @@
 #include "assets.h"
 #include "game.h"
 
-void game_init(Game *g) {
-    srand(clock());
-    table_init(&g->table);
-    game_initpiece(g);
-    g->running = true;
-    g->frame = 0;
-    g->level = 0;
-    g->lines = 0;
-}
-
-void game_score(Game *g, int score) {
-    g->score = g->score + score;
-}
-
 char randompiece() {
     uint8_t npiece = rand() % PIECE_AMOUNT;
     char piece_char;
@@ -36,9 +22,26 @@ char randompiece() {
     return piece_char;
 }
 
+void game_init(Game *g) {
+    srand(clock());
+    table_init(&g->table);
+    g->piece.next = randompiece();
+    game_initpiece(g);
+    g->running = true;
+    g->preview = true;
+    g->frame = 0;
+    g->score.level = 0;
+    g->score.lines = 0;
+}
+
+void game_score(Game *g, int score) {
+    g->score.score = g->score.score + score;
+}
+
 void game_initpiece(Game *g) {
     // g->piece.piece = 'i';
-    g->piece.piece = randompiece();
+    g->piece.piece = g->piece.next;
+    g->piece.next = randompiece();
     g->piece.rotation = 0;
     if(g->piece.piece == 'i') {g->piece.y = 0;} else {g->piece.y = 1;}
     switch(g->piece.piece) {
@@ -95,12 +98,12 @@ void game_clearline(Game* g) {
     }
     // Score
     switch (cleared_lines) {
-        case (1): game_score(g, 40   * (g->level + 1)); break;
-        case (2): game_score(g, 100  * (g->level + 1)); break;
-        case (3): game_score(g, 300  * (g->level + 1)); break;
-        case (4): game_score(g, 1200 * (g->level + 1)); break;
+        case (1): game_score(g, 40   * (g->score.level + 1)); break;
+        case (2): game_score(g, 100  * (g->score.level + 1)); break;
+        case (3): game_score(g, 300  * (g->score.level + 1)); break;
+        case (4): game_score(g, 1200 * (g->score.level + 1)); break;
     }
-    g->lines = g->lines + cleared_lines;
+    g->score.lines = g->score.lines + cleared_lines;
 }
 
 // Checks if movement is valid
@@ -128,22 +131,22 @@ void game_placepiece(Game *g){
             }
         }
     }
-    game_score(g, g->level + 1);
+    game_score(g, g->score.level + 1);
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
     g->frame = 0;
     game_initpiece(g);
 }
 
 void game_levelchecker(Game *g) {
-    if((unsigned int) g->lines / 10 > g->level) {
-        g->level = (unsigned int) g->lines / 10;
+    if((unsigned int) g->score.lines / 10 > g->score.level) {
+        g->score.level = (unsigned int) g->score.lines / 10;
     }
 }
 
 void game_fallpiece(Game *g) {
     int gravity;
 
-    switch(g->level) {
+    switch(g->score.level) {
         case 0: gravity = 48; break;
         case 1: gravity = 43; break;
         case 2: gravity = 38; break;
@@ -264,6 +267,7 @@ void game_inputhandler(Game *g) {
 
     switch(ch){
         case 'q': g->running = false; break;
+        case 'n': if (g->preview) {g->preview = false;} else {g->preview = true;} break;
         case 'j': if (game_rotatepiece(g, game_checkrotation(g, - 1))) {g->piece.rotation = game_checkrotation(g, - 1);} break;
         case 'k': if (game_rotatepiece(g, game_checkrotation(g, 1))) {g->piece.rotation = game_checkrotation(g, 1);} break;
         // case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
@@ -274,9 +278,44 @@ void game_inputhandler(Game *g) {
 }
 
 void game_drawstats(Game *g) {
-    mvprintw(0, 24, "Level: %d", g->level);
-    mvprintw(1, 24, "Lines: %d", g->lines);
-    mvprintw(2, 24, "Score: %d", g->score);
+    mvprintw(0, 24, "Next:");
+
+    if (g->preview) {
+        switch(g->piece.next) {
+            case 'i':
+                mvprintw(2, 24, L1_PREVIEW_I);
+                mvprintw(3, 24, L2_PREVIEW_I);
+                break;
+            case 'o':
+                mvprintw(2, 24, L1_PREVIEW_O);
+                mvprintw(3, 24, L2_PREVIEW_O);
+                break;
+            case 't':
+                mvprintw(2, 24, L1_PREVIEW_T);
+                mvprintw(3, 24, L2_PREVIEW_T);
+                break;
+            case 'j':
+                mvprintw(2, 24, L1_PREVIEW_J);
+                mvprintw(3, 24, L2_PREVIEW_J);
+                break;
+            case 'l':
+                mvprintw(2, 24, L1_PREVIEW_L);
+                mvprintw(3, 24, L2_PREVIEW_L);
+                break;
+            case 's':
+                mvprintw(2, 24, L1_PREVIEW_S);
+                mvprintw(3, 24, L2_PREVIEW_S);
+                break;
+            case 'z':
+                mvprintw(2, 24, L1_PREVIEW_Z);
+                mvprintw(3, 24, L2_PREVIEW_Z);
+                break;
+        }
+    }
+
+    mvprintw(5, 24, "Level: %d", g->score.level);
+    mvprintw(6, 24, "Lines: %d", g->score.lines);
+    mvprintw(7, 24, "Score: %d", g->score.score);
 }
 
 void game_drawtable(Game *g) {
