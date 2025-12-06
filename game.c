@@ -22,15 +22,16 @@ char randompiece() {
     return piece_char;
 }
 
-void game_init(Game *g) {
+void game_init(Game *g, int startlevel) {
     srand(clock());
     table_init(&g->table);
     g->piece.next = randompiece();
     game_initpiece(g);
     g->running = true;
     g->preview = true;
+    g->harddrop = false;
     g->frame = 0;
-    g->score.level = 0;
+    g->score.level = startlevel;
     g->score.lines = 0;
 }
 
@@ -132,6 +133,7 @@ void game_placepiece(Game *g){
         }
     }
     game_score(g, g->score.level + 1);
+    g->harddrop = false;
     memset(g->piece.table, EMPTY, sizeof(g->piece.table));
     g->frame = 0;
     game_initpiece(g);
@@ -146,37 +148,43 @@ void game_levelchecker(Game *g) {
 void game_fallpiece(Game *g) {
     int gravity;
 
-    switch(g->score.level) {
-        case 0: gravity = 48; break;
-        case 1: gravity = 43; break;
-        case 2: gravity = 38; break;
-        case 3: gravity = 33; break;
-        case 4: gravity = 28; break;
-        case 5: gravity = 23; break;
-        case 6: gravity = 18; break;
-        case 7: gravity = 13; break;
-        case 8: gravity = 8; break;
-        case 9: gravity = 6; break;
-        case 10:
-        case 11:
-        case 12: gravity = 5; break;
-        case 13:
-        case 14:
-        case 15: gravity = 4; break;
-        case 16:
-        case 17:
-        case 18: gravity = 3; break;
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
-        case 24:
-        case 25:
-        case 26:
-        case 27:
-        case 28: gravity = 2; break;
-        default: gravity = 1; break;
+    if (g->harddrop) {
+        gravity = 1;
+        g->score.score++;
+    }
+    else {
+        switch(g->score.level) {
+            case 0: gravity = 48; break;
+            case 1: gravity = 43; break;
+            case 2: gravity = 38; break;
+            case 3: gravity = 33; break;
+            case 4: gravity = 28; break;
+            case 5: gravity = 23; break;
+            case 6: gravity = 18; break;
+            case 7: gravity = 13; break;
+            case 8: gravity = 8; break;
+            case 9: gravity = 6; break;
+            case 10:
+            case 11:
+            case 12: gravity = 5; break;
+            case 13:
+            case 14:
+            case 15: gravity = 4; break;
+            case 16:
+            case 17:
+            case 18: gravity = 3; break;
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+            case 28: gravity = 2; break;
+            default: gravity = 1; break;
+        }
     }
 
     if(g->frame >= gravity) {
@@ -274,6 +282,7 @@ void game_inputhandler(Game *g) {
         case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
         case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
         case 's': game_softdrop(g); break;
+        case ' ': g->harddrop = true; break;
     }
 }
 

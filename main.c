@@ -1,6 +1,7 @@
 #include <curses.h>
 #include <stdbool.h>
 #include <time.h>
+#include <stdlib.h>
 
 #include "game.h"
 
@@ -41,9 +42,27 @@ static void main_loop(Game *g)
     }
 }
 
+int levelselector() {
+    char buf[32];
+
+    printf("Enter a level [0-9]: ");
+    fgets(buf, sizeof(buf), stdin);
+
+    int level = atoi(buf);
+
+    return level;
+}
+
+
 int main(void)
 {
     Game g;
+    int level;
+
+    do {
+        level = levelselector();
+        if (level < 0 || level > 9) {printf("Insert a valid number!\n");}
+    } while (level < 0 || level > 9);
 
     WINDOW* win = initscr();
     raw();
@@ -51,7 +70,7 @@ int main(void)
     curs_set(0);
     noecho();
 
-    game_init(&g);
+    game_init(&g, level);
     main_loop(&g);
 
     endwin();

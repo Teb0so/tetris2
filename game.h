@@ -17,9 +17,10 @@ typedef struct {
     int frame;
     bool running;
     bool preview;
+    bool harddrop;
 } Game;
 
-extern void game_init(Game *g);
+extern void game_init(Game *g, int startlevel);
 extern void game_topoutchecker(Game *g);
 extern void game_initpiece(Game *g);
 extern void game_fallpiece(Game *g);
