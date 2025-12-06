@@ -11,13 +11,14 @@ typedef struct {
 } Score;
 
 typedef struct {
-    Table table;
-    Piece piece;
-    Score score;
-    int frame;
     bool running;
     bool preview;
     bool harddrop;
+    bool paused;
+    int frame;
+    Table table;
+    Piece piece;
+    Score score;
 } Game;
 
 extern void game_init(Game *g, int startlevel);

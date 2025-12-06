@@ -37,7 +37,9 @@ static void main_loop(Game *g)
             sleep_time.tv_nsec = FRAME_TIME - frame_ns;
             nanosleep(&sleep_time, NULL);
 
-        g->frame ++;
+            if (!g->paused) {
+                g->frame ++;
+            }
         }
     }
 }

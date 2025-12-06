@@ -30,6 +30,7 @@ void game_init(Game *g, int startlevel) {
     g->running = true;
     g->preview = true;
     g->harddrop = false;
+    g->paused = false;
     g->frame = 0;
     g->score.level = startlevel;
     g->score.lines = 0;
@@ -283,6 +284,7 @@ void game_inputhandler(Game *g) {
         case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
         case 's': game_softdrop(g); break;
         case ' ': g->harddrop = true; break;
+        case 'p': if (g->paused == false) {g->paused = true;} else {g->paused = false;} break;
     }
 }
 
@@ -325,6 +327,7 @@ void game_drawstats(Game *g) {
     mvprintw(5, 24, "Level: %d", g->score.level);
     mvprintw(6, 24, "Lines: %d", g->score.lines);
     mvprintw(7, 24, "Score: %d", g->score.score);
+    if (g->paused) {mvprintw(9, 24, "PAUSED");}
 }
 
 void game_drawtable(Game *g) {
