@@ -7,6 +7,8 @@ I don't like.
 
 **Note that this is just one of my early learning projects, and its not meant to be an example of how to do things**
 
+![](https://imgur.com/a/Jx25Qmp.gif)
+
 ## Dependencies
 
 - libncurses-dev
