@@ -23,7 +23,7 @@ char randompiece() {
 }
 
 void game_init(Game *g, int startlevel) {
-    srand(clock());
+    srand(time(NULL));
     table_init(&g->table);
     g->piece.next = randompiece();
     game_initpiece(g);
