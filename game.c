@@ -88,6 +88,7 @@ void game_clearline(Game* g) {
                     erase();
                     g->table.tiles[i][k] = 0;
                     game_drawtable(g);
+                    game_drawstats(g);
                     usleep(10000);
                     refresh();
                     line = i;
@@ -328,6 +329,13 @@ void game_drawstats(Game *g) {
     mvprintw(6, 24, "Lines: %d", g->score.lines);
     mvprintw(7, 24, "Score: %d", g->score.score);
     if (g->paused) {mvprintw(9, 24, "PAUSED");}
+    mvprintw(11, 24, "'q'     - Quit\n");
+    mvprintw(12, 24, "'n'     - Toggle preview\n");
+    mvprintw(13, 24, "'j/k'   - Rotate\n");
+    mvprintw(14, 24, "'a/d'   - Move left/right\n");
+    mvprintw(15, 24, "'s'     - Soft drop\n");
+    mvprintw(16, 24, "'Space' - Hard drop\n");
+    mvprintw(17, 24, "'p'     - Toggle pause");
 }
 
 void game_drawtable(Game *g) {
