@@ -1,8 +1,9 @@
 CC = gcc
 CFLAGS = -Wall -Wextra #-std=c99
 LDFLAGS = -lncurses
+SRC-PATH = ./src
 
-OBJS = main.o game.o assets.o
+OBJS = $(SRC-PATH)/main.o $(SRC-PATH)/game.o $(SRC-PATH)/assets.o
 
 tetris2: $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
@@ -11,5 +12,5 @@ tetris2: $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o tetris2
+	rm -f $(SRC-PATH)/*.o tetris2
 
