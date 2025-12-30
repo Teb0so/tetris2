@@ -283,7 +283,7 @@ void game_inputhandler(Game *g) {
             case 'n': if (g->preview) {g->preview = false;} else {g->preview = true;} break;
             case 'j': if (game_rotatepiece(g, game_checkrotation(g, - 1))) {g->piece.rotation = game_checkrotation(g, - 1);} break;
             case 'k': if (game_rotatepiece(g, game_checkrotation(g, 1))) {g->piece.rotation = game_checkrotation(g, 1);} break;
-                          // case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
+            // case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
             case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
             case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
             case 's': game_softdrop(g); break;

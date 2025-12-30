@@ -76,5 +76,7 @@ int main(void)
     main_loop(&g);
 
     endwin();
+
+    printf("Score: %d\n", g.score.score);
     return 0;
 }
