@@ -155,6 +155,10 @@ void game_fallpiece(Game *g) {
         if (!g->paused) {
             g->score.score++;
         }
+        // Prevent the falling piece entering a placed piece on soft drop
+        if (!game_checkmovement(g, 0, 0)) {
+            game_movepiece(g, 0, - 1);
+        }
     }
     else {
         switch(g->score.level) {
