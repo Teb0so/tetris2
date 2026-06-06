@@ -355,7 +355,10 @@ void game_drawstats(Game *g) {
 void game_drawtable(Game *g) {
     for(int i = OFFSET; i < ROWS - 1; i++) {
         for(int j = OFFSET; j < COLS - 1; j++) {
-            if(g->table.tiles[i][j] == EMPTY && g->piece.table[i][j] == EMPTY) {
+            if (g->paused) {
+                printw(FILLED_TILE);
+            }
+            else if(g->table.tiles[i][j] == EMPTY && g->piece.table[i][j] == EMPTY) {
                 printw(EMPTY_TILE);
             }
             else if(g->table.tiles[i][j] == TILE || g->piece.table[i][j] == TILE) {
