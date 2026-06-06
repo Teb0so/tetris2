@@ -8,8 +8,7 @@
 #define FPS 60
 #define FRAME_TIME (1000000000L / FPS)
 
-static void main_loop(Game *g)
-{
+static void main_loop(Game *g) {
     struct timespec start, end;
     while(g->running) {
         clock_gettime(CLOCK_MONOTONIC, &start);
@@ -55,9 +54,7 @@ int levelselector() {
     return level;
 }
 
-
-int main(void)
-{
+int main(void) {
     Game g;
     int level;
 
@@ -71,6 +68,9 @@ int main(void)
     nodelay(win, TRUE);
     curs_set(0);
     noecho();
+
+    int w_rows, w_cols;
+    getmaxyx(win, w_rows, w_cols);
 
     game_init(&g, level);
     main_loop(&g);
