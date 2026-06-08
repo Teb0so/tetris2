@@ -7,19 +7,10 @@
 #include "game.h"
 
 char randompiece() {
-    uint8_t npiece = rand() % PIECE_AMOUNT;
-    char piece_char;
+    uint8_t random = rand() % PIECE_AMOUNT;
+    char pieces[8] = {'i', 'o', 'j', 'l', 's', 't', 'z'};
 
-    switch(npiece) {
-        case 0: piece_char = 'i'; break;
-        case 1: piece_char = 'o'; break;
-        case 2: piece_char = 'j'; break;
-        case 3: piece_char = 'l'; break;
-        case 4: piece_char = 's'; break;
-        case 5: piece_char = 't'; break;
-        case 6: piece_char = 'z'; break;
-    }
-    return piece_char;
+    return pieces[random - 1];
 }
 
 void game_init(Game *g, int startlevel) {
@@ -45,7 +36,7 @@ void game_initpiece(Game *g) {
     g->piece.piece = g->piece.next;
     g->piece.next = randompiece();
     g->piece.rotation = 0;
-    if(g->piece.piece == 'i') {g->piece.y = 0;} else {g->piece.y = 1;}
+    if(g->piece.piece == 'i') g->piece.y = 0; else g->piece.y = 1;
     switch(g->piece.piece) {
         case 'i': case 'o': g->piece.x = OFFSET + 3; break;
         default:  g->piece.x = OFFSET + 4; break;
@@ -216,17 +207,17 @@ int game_checkrotation(Game *g, int nr) {
             rotation = 0;
             break;
         case 'i': case 's': case 'z':
-            if(nrotation < 0) {rotation = 3;}
-            else if(nrotation == 0) {rotation = 0;}
-            else if(nrotation == 1) {rotation = 3;}
-            else if(nrotation == 2) {rotation = 0;}
-            else if(nrotation == 3) {rotation = 3;}
-            if(nrotation > 3) {rotation = 0;}
+            if(nrotation < 0) rotation = 3;
+            else if(nrotation == 0) rotation = 0;
+            else if(nrotation == 1) rotation = 3;
+            else if(nrotation == 2) rotation = 0;
+            else if(nrotation == 3) rotation = 3;
+            if(nrotation > 3) rotation = 0;
             break;
         case 'j': case 'l': case 't':
-            if(nrotation < 0) {rotation = 3;}
-            else if(nrotation >= 0 || nrotation <= 3) {rotation = nrotation;}
-            if(nrotation > 3) {rotation = 0;}
+            if(nrotation < 0) rotation = 3;
+            else if(nrotation >= 0 || nrotation <= 3) rotation = nrotation;
+            if(nrotation > 3) rotation = 0;
             break;
     }
     return rotation;
@@ -284,12 +275,12 @@ void game_inputhandler(Game *g) {
     if (!g->paused) {
         switch(ch){
             case 'q': g->running = false; break;
-            case 'n': if (g->preview) {g->preview = false;} else {g->preview = true;} break;
-            case 'j': if (game_rotatepiece(g, game_checkrotation(g, - 1))) {g->piece.rotation = game_checkrotation(g, - 1);} break;
-            case 'k': if (game_rotatepiece(g, game_checkrotation(g, 1))) {g->piece.rotation = game_checkrotation(g, 1);} break;
-            // case 'w': if (game_checkmovement(g, 0, - 1)) { game_movepiece(g, 0, - 1);} break;
-            case 'a': if (game_checkmovement(g, - 1, 0)) { game_movepiece(g, - 1, 0);} break;
-            case 'd': if (game_checkmovement(g, 1, 0)) { game_movepiece(g, 1, 0);} break;
+            case 'n': if (g->preview) g->preview = false; else g->preview = true; break;
+            case 'j': if (game_rotatepiece(g, game_checkrotation(g, - 1))) g->piece.rotation = game_checkrotation(g, - 1); break;
+            case 'k': if (game_rotatepiece(g, game_checkrotation(g, 1))) g->piece.rotation = game_checkrotation(g, 1); break;
+            // case 'w': if (game_checkmovement(g, 0, - 1)) game_movepiece(g, 0, - 1); break;
+            case 'a': if (game_checkmovement(g, - 1, 0)) game_movepiece(g, - 1, 0); break;
+            case 'd': if (game_checkmovement(g, 1, 0)) game_movepiece(g, 1, 0); break;
             case 's': game_softdrop(g); break;
             case ' ': g->harddrop = true; break;
             case 'p': g->paused = true; break;
@@ -342,7 +333,7 @@ void game_drawstats(Game *g) {
     mvprintw(5, 24, "Level: %d", g->score.level);
     mvprintw(6, 24, "Lines: %d", g->score.lines);
     mvprintw(7, 24, "Score: %d", g->score.score);
-    if (g->paused) {mvprintw(9, 24, "PAUSED");}
+    if (g->paused) mvprintw(9, 24, "PAUSED");
     mvprintw(11, 24, "'q'     - Quit\n");
     mvprintw(12, 24, "'n'     - Toggle preview\n");
     mvprintw(13, 24, "'j/k'   - Rotate\n");
