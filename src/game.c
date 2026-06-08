@@ -7,10 +7,9 @@
 #include "game.h"
 
 char randompiece() {
-    uint8_t random = rand() % PIECE_AMOUNT;
-    char pieces[8] = {'i', 'o', 'j', 'l', 's', 't', 'z'};
+    const char pieces[PIECE_AMOUNT] = {'i', 'o', 'j', 'l', 's', 't', 'z'};
 
-    return pieces[random - 1];
+    return pieces[rand() % PIECE_AMOUNT];
 }
 
 void game_init(Game *g, int startlevel) {
@@ -23,6 +22,7 @@ void game_init(Game *g, int startlevel) {
     g->harddrop = false;
     g->paused = false;
     g->frame = 0;
+    g->score.score = 0;
     g->score.level = startlevel;
     g->score.lines = 0;
 }
