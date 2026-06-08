@@ -32,43 +32,43 @@ void table_init(Table *t) {
 }
 
 void set_piecearr(Piece *p, char piece) {
-    const int PIECE_I[4][4] = {
+    static const int PIECE_I[4][4] = {
         {0, 0, 0, 0,},
         {0, 0, 0, 0,},
         {1, 1, 1, 1,},
         {0, 0, 0, 0,}
     };
-    const int PIECE_T[4][4] = {
+    static const int PIECE_T[4][4] = {
         {0, 0, 0, 0,},
         {1, 1, 1, 0,},
         {0, 1, 0, 0,},
         {0, 0, 0, 0,}
     };
-    const int PIECE_O[4][4] = {
+    static const int PIECE_O[4][4] = {
         {0, 0, 0, 0,},
         {0, 1, 1, 0,},
         {0, 1, 1, 0,},
         {0, 0, 0, 0,}
     };
-    const int PIECE_J[4][4] = {
+    static const int PIECE_J[4][4] = {
         {0, 0, 0, 0,},
         {1, 1, 1, 0,},
         {0, 0, 1, 0,},
         {0, 0, 0, 0,}
     };
-    const int PIECE_L[4][4] = {
+    static const int PIECE_L[4][4] = {
         {0, 0, 0, 0,},
         {1, 1, 1, 0,},
         {1, 0, 0, 0,},
         {0, 0, 0, 0,}
     };
-    const int PIECE_S[4][4] = {
+    static const int PIECE_S[4][4] = {
         {0, 0, 0, 0,},
         {0, 1, 1, 0,},
         {1, 1, 0, 0,},
         {0, 0, 0, 0,}
     };
-    const int PIECE_Z[4][4] = {
+    static const int PIECE_Z[4][4] = {
         {0, 0, 0, 0,},
         {1, 1, 0, 0,},
         {0, 1, 1, 0,},
