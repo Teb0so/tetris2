@@ -4,11 +4,12 @@
 #include <stdlib.h>
 
 #include "game.h"
+#include "window.h"
 
 #define FPS 60
 #define FRAME_TIME (1000000000L / FPS)
 
-static void main_loop(Game *g) {
+static void main_loop(Game *g, Window w) {
     struct timespec start, end;
     while(g->running) {
         clock_gettime(CLOCK_MONOTONIC, &start);
@@ -19,8 +20,8 @@ static void main_loop(Game *g) {
         game_drawpiece(g);
         game_fallpiece(g);
         game_topoutchecker(g);
-        game_drawtable(g);
-        game_drawstats(g);
+        game_drawtable(g, w);
+        game_drawstats(g, w);
         game_clearline(g);
         game_levelchecker(g);
         game_inputhandler(g);
@@ -56,6 +57,7 @@ int levelselector() {
 
 int main(void) {
     Game g;
+    Window w;
     int level;
 
     do {
@@ -69,11 +71,10 @@ int main(void) {
     curs_set(0);
     noecho();
 
-    int w_rows, w_cols;
-    getmaxyx(win, w_rows, w_cols);
+    getmaxyx(win, w.rows, w.cols);
 
     game_init(&g, level);
-    main_loop(&g);
+    main_loop(&g, w);
 
     endwin();
 
