@@ -34,6 +34,6 @@ extern void game_drawpiece(Game *g);
 extern void game_drawstats(Game *g, Window w);
 extern void game_levelchecker(Game *g);
 extern void game_inputhandler(Game *g);
-extern void game_clearline(Game *g);
+extern void game_clearline(Game *g, Window);
 
 #endif // GAME_H

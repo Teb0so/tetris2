@@ -22,7 +22,7 @@ static void main_loop(Game *g, Window w) {
         game_topoutchecker(g);
         game_drawtable(g, w);
         game_drawstats(g, w);
-        game_clearline(g);
+        game_clearline(g, w);
         game_levelchecker(g);
         game_inputhandler(g);
 

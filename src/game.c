@@ -66,7 +66,7 @@ void game_shiftlines(Game *g, int line) {
     }
 }
 
-void game_clearline(Game* g) {
+void game_clearline(Game* g, Window w) {
     int line;
     int cleared_lines = 0;
     for(int i = 0; i < ROWS - 1; i++) {
@@ -79,10 +79,10 @@ void game_clearline(Game* g) {
                 for(int k = OFFSET; k < COLS - 1; k++) {
                     erase();
                     g->table.tiles[i][k] = 0;
-                    // game_drawtable(g);
-                    // game_drawstats(g);
-                    // usleep(10000);
-                    // refresh();
+                    game_drawtable(g, w);
+                    game_drawstats(g, w);
+                    usleep(10000);
+                    refresh();
                     line = i;
                 }
                 cleared_lines++;
