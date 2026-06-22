@@ -75,7 +75,7 @@ int main(void) {
     getmaxyx(win, w.rows, w.cols);
 
     if (w.rows < GAME_HEIGHT || w.cols < GAME_WIDTH) {
-        printf("[ERROR] terminal to small, resize your terminal to be at least %d X %d", GAME_WIDTH, GAME_HEIGHT);
+        printf("[ERROR] terminal to small, resize your terminal to be at least %d X %d\n", GAME_WIDTH, GAME_HEIGHT);
         return 0;
     }
 
