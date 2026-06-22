@@ -5,7 +5,7 @@
 #include "assets.h"
 #include "window.h"
 
-#define GAME_WIDTH 68
+#define GAME_WIDTH 67
 #define GAME_HEIGHT 20
 
 typedef struct {
