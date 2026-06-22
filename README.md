@@ -7,7 +7,7 @@ I don't like.
 
 **Note that this is just one of my early learning projects, and its not meant to be an example of how to do things**
 
-![](https://imgur.com/a/Jx25Qmp.gif)
+![](https://raw.githubusercontent.com/Teb0so/tetris2/refs/heads/main/art/tetris2.gif)
 
 ## Dependencies
 
