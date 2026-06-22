@@ -13,7 +13,41 @@ char randompiece() {
     return pieces[rand() % PIECE_AMOUNT];
 }
 
+void game_piececount(Game *g) {
+    switch (g->piece.piece) {
+        case 't': g->score.t++; break;
+        case 'j': g->score.j++; break;
+        case 'z': g->score.z++; break;
+        case 'o': g->score.o++; break;
+        case 's': g->score.s++; break;
+        case 'l': g->score.l++; break;
+        case 'i': g->score.i++; break;
+    }
+}
+
+void game_initpiece(Game *g) {
+    g->piece.piece = g->piece.next;
+    game_piececount(g);
+    g->piece.next = randompiece();
+    g->piece.rotation = 0;
+    if(g->piece.piece == 'i') g->piece.y = 0; else g->piece.y = 1;
+    switch(g->piece.piece) {
+        case 'i': case 'o': g->piece.x = OFFSET + 3; break;
+        default:  g->piece.x = OFFSET + 4; break;
+    }
+    set_piecearr(&g->piece, g->piece.piece);
+    memset(g->piece.table, EMPTY, sizeof(g->piece.table));
+}
+
 void game_init(Game *g, int startlevel) {
+    g->score.t = 0;
+    g->score.j = 0;
+    g->score.z = 0;
+    g->score.o = 0;
+    g->score.s = 0;
+    g->score.l = 0;
+    g->score.i = 0;
+
     srand(time(NULL));
     table_init(&g->table);
     g->piece.next = randompiece();
@@ -30,20 +64,6 @@ void game_init(Game *g, int startlevel) {
 
 void game_score(Game *g, int score) {
     g->score.score = g->score.score + score;
-}
-
-void game_initpiece(Game *g) {
-    // g->piece.piece = 'i';
-    g->piece.piece = g->piece.next;
-    g->piece.next = randompiece();
-    g->piece.rotation = 0;
-    if(g->piece.piece == 'i') g->piece.y = 0; else g->piece.y = 1;
-    switch(g->piece.piece) {
-        case 'i': case 'o': g->piece.x = OFFSET + 3; break;
-        default:  g->piece.x = OFFSET + 4; break;
-    }
-    set_piecearr(&g->piece, g->piece.piece);
-    memset(g->piece.table, EMPTY, sizeof(g->piece.table));
 }
 
 void game_topoutchecker(Game *g) {
@@ -81,6 +101,7 @@ void game_clearline(Game* g, Window w) {
                     g->table.tiles[i][k] = 0;
                     game_drawtable(g, w);
                     game_drawstats(g, w);
+                    game_drawstatsl(g, w);
                     usleep(10000);
                     refresh();
                     line = i;
@@ -295,11 +316,46 @@ void game_inputhandler(Game *g) {
     }
 }
 
+void game_drawstatsl(Game*g, Window w) {
+    int x_offset = (w.cols / 2) - (GAME_WIDTH / 2);
+    int y_offset = (w.rows / 2) - (GAME_HEIGHT / 2);
+
+    mvprintw(y_offset, x_offset, "Statistics:");
+
+    mvprintw(y_offset + 2, x_offset + 1, L1_PREVIEW_T);
+    mvprintw(y_offset + 3, x_offset + 1, L2_PREVIEW_T);
+
+    mvprintw(y_offset + 5, x_offset + 1, L1_PREVIEW_J);
+    mvprintw(y_offset + 6, x_offset + 1, L2_PREVIEW_J);
+
+    mvprintw(y_offset + 7, x_offset + 1, L1_PREVIEW_Z);
+    mvprintw(y_offset + 8, x_offset + 1, L2_PREVIEW_Z);
+
+    mvprintw(y_offset + 10, x_offset + 1, L1_PREVIEW_O);
+    mvprintw(y_offset + 11, x_offset + 1, L2_PREVIEW_O);
+
+    mvprintw(y_offset + 13, x_offset + 1, L1_PREVIEW_S);
+    mvprintw(y_offset + 14, x_offset + 1, L2_PREVIEW_S);
+
+    mvprintw(y_offset + 16, x_offset + 1, L1_PREVIEW_L);
+    mvprintw(y_offset + 17, x_offset + 1, L2_PREVIEW_L);
+
+    mvprintw(y_offset + 19, x_offset + 1, L2_PREVIEW_I);
+
+    mvprintw(y_offset + 3, x_offset + 11, "%d", g->score.t);
+    mvprintw(y_offset + 6, x_offset + 11, "%d", g->score.j);
+    mvprintw(y_offset + 8, x_offset + 11, "%d", g->score.z);
+    mvprintw(y_offset + 11, x_offset + 11, "%d", g->score.o);
+    mvprintw(y_offset + 14, x_offset + 11, "%d", g->score.s);
+    mvprintw(y_offset + 17, x_offset + 11, "%d", g->score.l);
+    mvprintw(y_offset + 19, x_offset + 11, "%d", g->score.i);
+}
+
 void game_drawstats(Game *g, Window w) {
     int x_offset = (w.cols / 2) - (GAME_WIDTH / 2);
     int y_offset = (w.rows / 2) - (GAME_HEIGHT / 2);
 
-    const int offset = 24;
+    const int offset = 42;
 
     mvprintw(y_offset + 0, x_offset + offset, "Next:");
 
@@ -356,13 +412,13 @@ void game_drawtable(Game *g, Window w) {
     for(int i = OFFSET; i < ROWS - 1; i++) {
         for(int j = OFFSET; j < COLS - 1; j++) {
             if (g->paused) {
-                mvprintw(y_offset + (i - OFFSET), x_offset + (j*2 - OFFSET - 2), FILLED_TILE);
+                mvprintw(y_offset + (i - OFFSET), x_offset + 18 + (j*2 - OFFSET - 2), FILLED_TILE);
             }
             else if(g->table.tiles[i][j] == EMPTY && g->piece.table[i][j] == EMPTY) {
-                mvprintw(y_offset + (i - OFFSET), x_offset + (j*2 - OFFSET - 2), EMPTY_TILE);
+                mvprintw(y_offset + (i - OFFSET), x_offset + 18 + (j*2 - OFFSET - 2), EMPTY_TILE);
             }
             else if(g->table.tiles[i][j] == TILE || g->piece.table[i][j] == TILE) {
-                mvprintw(y_offset + (i - OFFSET), x_offset + (j*2 - OFFSET - 2), FILLED_TILE);
+                mvprintw(y_offset + (i - OFFSET), x_offset + 18 + (j*2 - OFFSET - 2), FILLED_TILE);
             }
         }
     }
