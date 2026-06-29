@@ -1,9 +1,9 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef COMMON_H
+#define COMMON_H
 
 typedef struct {
     int rows;
     int cols;
 } Window;
 
-#endif //WINDOW_H
+#endif //COMMON_H

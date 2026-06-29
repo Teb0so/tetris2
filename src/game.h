@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include "assets.h"
-#include "window.h"
+#include "common.h"
 
 #define GAME_WIDTH 67
 #define GAME_HEIGHT 20

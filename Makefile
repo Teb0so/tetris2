@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra #-std=c99
 LDFLAGS = -lncurses
 SRC-PATH = ./src
 
-OBJS = $(SRC-PATH)/main.o $(SRC-PATH)/game.o $(SRC-PATH)/assets.o
+OBJS = $(SRC-PATH)/main.o $(SRC-PATH)/game.o $(SRC-PATH)/assets.o $(SRC-PATH)/draw.o
 
 tetris2: $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)

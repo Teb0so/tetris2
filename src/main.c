@@ -1,10 +1,11 @@
-#include <curses.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
 #include <stdlib.h>
+#include <locale.h>
 
 #include "game.h"
-#include "window.h"
+#include "draw.h"
 
 #define FPS 60
 #define FRAME_TIME (1000000000L / FPS)
@@ -15,19 +16,15 @@ static void main_loop(Game *g, Window w) {
         clock_gettime(CLOCK_MONOTONIC, &start);
 
         // Game logic
-        erase();
 
         game_drawpiece(g);
         game_fallpiece(g);
         game_topoutchecker(g);
-        game_drawtable(g, w);
-        game_drawstats(g, w);
-        game_drawstatsl(g, w);
         game_clearline(g, w);
         game_levelchecker(g);
         game_inputhandler(g);
 
-        refresh();
+        draw(*g, w);
 
         clock_gettime(CLOCK_MONOTONIC , &end);
         long int frame_ns = (end.tv_sec - start.tv_sec) * 1000000000L +
@@ -61,18 +58,14 @@ int main(void) {
     Window w;
     int level;
 
+    setlocale(LC_CTYPE,"C-UTF-8");
+
     do {
         level = levelselector();
         if (level < 0 || level > 9) {printf("Insert a valid number!\n");}
     } while (level < 0 || level > 9);
 
-    WINDOW* win = initscr();
-    raw();
-    nodelay(win, TRUE);
-    curs_set(0);
-    noecho();
-
-    getmaxyx(win, w.rows, w.cols);
+    draw_begin(&w);
 
     if (w.rows < GAME_HEIGHT || w.cols < GAME_WIDTH) {
         printf("[ERROR] terminal to small, resize your terminal to be at least %d X %d\n", GAME_WIDTH, GAME_HEIGHT);
@@ -82,7 +75,7 @@ int main(void) {
     game_init(&g, level);
     main_loop(&g, w);
 
-    endwin();
+    draw_end();
 
     printf("Score: %d\n", g.score.score);
     return 0;
