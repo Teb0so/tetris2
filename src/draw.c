@@ -4,11 +4,6 @@
 #include "draw.h"
 #include "game.h"
 
-void halt(Game g, Window w, int n) {
-    draw(g, w);
-    usleep(n);
-}
-
 int draw_getinput() {
     int ch = getch();
     return ch;
